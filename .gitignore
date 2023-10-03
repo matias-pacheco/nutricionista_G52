@@ -22,3 +22,9 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# esto bloquea algunos archivos (REVISAR QUE CLASE DE ARCHIVOS)
+/dist/
+/test/
+/build/
+/nbproject/private/
