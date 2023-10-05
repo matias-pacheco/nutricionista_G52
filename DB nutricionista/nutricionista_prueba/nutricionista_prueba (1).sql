@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-10-2023 a las 02:24:34
+-- Tiempo de generación: 05-10-2023 a las 21:25:07
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -101,7 +101,7 @@ CREATE TABLE `paciente` (
 
 INSERT INTO `paciente` (`idPaciente`, `dni`, `apellido`, `nombre`, `domicilio`, `telefono`, `estado`) VALUES
 (1, 20333444, 'Giraldo', 'Romualdo', 'Calle 321', '11 30032002', 0),
-(2, 30444555, 'Gambini', 'Jorge', 'Calle ALta 333', '11 40045005', 1);
+(2, 40666777, 'Lang', 'Rodrigo', 'Calle Baja 321', '11 50054004', 0);
 
 --
 -- Índices para tablas volcadas
