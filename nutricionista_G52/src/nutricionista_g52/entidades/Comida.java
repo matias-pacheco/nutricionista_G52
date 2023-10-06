@@ -70,7 +70,9 @@ public class Comida {
 
     @Override
     public String toString() {
-        return "idComida: "+idComida+"\nnombre: "+nombre+"\ndetalle: "+detalle+"\ncantCalorias: "+cantCalorias
-                +"\nestado: "+estado+"\n";
+        String esp = "        ";
+        
+        return "idComida: "+idComida+"\n"+esp+"nombre: "+nombre+"\n"+esp+"detalle: "+detalle
+                +"\n"+esp+"cantCalorias: "+cantCalorias+"\n"+esp+"estado: "+estado;
     }
 }

@@ -91,7 +91,10 @@ public class Paciente {
 
     @Override
     public String toString() {
-        return "idPaciente: "+idPaciente+"\ndni: "+dni+"\napellido: "+apellido+"\nnombre: "+nombre
-                +"\ndomicilio: "+domicilio+"\ntelefono: "+telefono+"\nestado: "+estado+"\n";
+        String esp = "          ";
+        
+        return "idPaciente: "+idPaciente+"\n"+esp+"dni: "+dni+"\n"+esp+"apellido: "+apellido
+                +"\n"+esp+"nombre: "+nombre+"\n"+esp+"domicilio: "+domicilio+"\n"+esp+"telefono: "+telefono
+                +"\n"+esp+"estado: "+estado;
     }
 }

@@ -24,29 +24,29 @@ public class Test {
         PacienteData pacData = new PacienteData();
 
 //----- CREATE paciente -----
-//--- pac1 ----
+////--- pac1 ----
 //        Paciente pac1 = new Paciente(10222333, "Peréz", "Juan", "Calle 123", "11 20023003", true);
 //        
 //        pacData.guardarPaciente(pac1);
 
-//--- pac2 ---
+////--- pac2 ---
 //        Paciente pac2 = new Paciente(30444555, "Gambini", "Jorge", "Calle ALta 333", "11 40045005", true);
 //        
 //        pacData.guardarPaciente(pac2);
 
         
 //----- READ paciente -----
-//--- pac1 ---
-//        Paciente pac1Lectura = pacData.buscarPaciente(1);
+////--- pac1 ---
+        Paciente pac1Lectura = pacData.buscarPaciente(1);
 //        System.out.println(pac1Lectura);
         
-//--- pac2 ---
-//        Paciente pac2Lectura = pacData.buscarPaciente(2);
+////--- pac2 ---
+        Paciente pac2Lectura = pacData.buscarPaciente(2);
 //        System.out.println(pacData.buscarPaciente(pac2Lectura.getIdPaciente()));
 
 
 //----- UPDATE paciente -----
-//--- pac1 ---
+////--- pac1 ---
 //        pac1Lectura.setDni(20333444);
 //        pac1Lectura.setApellido("Giraldo");
 //        pac1Lectura.setNombre("Romualdo");
@@ -55,7 +55,7 @@ public class Test {
 //        
 //        pacData.modificarPaciente(pac1Lectura);
         
-//--- pac2 ---
+////--- pac2 ---
 //        pac2Lectura.setDni(40666777);
 //        pac2Lectura.setApellido("Lang");
 //        pac2Lectura.setNombre("Rodrigo");
@@ -66,26 +66,26 @@ public class Test {
         
         
 //----- READ paciente -----
-//--- pac1 ---
+////--- pac1 ---
 //        System.out.println(pacData.buscarPaciente(1));
 
-//--- pac2 ---
+////--- pac2 ---
 //        System.out.println(pacData.buscarPaciente(pac2Lectura.getIdPaciente()));
 
 
 //----- DELETE(lógico) -----
-//--- pac1 ---
+////--- pac1 ---
 //        pacData.borrarPaciente(pac1Lectura.getIdPaciente());
 
-//--- pac2 ---
+////--- pac2 ---
 //        pacData.borrarPaciente(pac2Lectura.getIdPaciente());
 
         
 //----- READ paciente -----
-//--- pac1 ---
+////--- pac1 ---
 //        System.out.println(pacData.buscarPaciente(pac1Lectura.getIdPaciente()));
-
-//--- pac2 ---
+//
+////--- pac2 ---
 //        System.out.println(pacData.buscarPaciente(pac2Lectura.getIdPaciente()));
     }
 }
