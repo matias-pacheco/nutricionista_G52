@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class Dieta {
         private int idDieta;
         private String nombre;
-        private int idPaciente;
+        private Paciente paciente;
         private LocalDate fechaInicial;
         private double pesoInicial;
         private LocalDate fechaFinal;
@@ -20,10 +20,10 @@ public class Dieta {
     public Dieta() {
     }
     //2_con_todo
-    public Dieta(int idDieta, String nombre, int idPaciente, LocalDate fechaInicial, double pesoInicial, LocalDate fechaFinal, double pesoFinal) {
+    public Dieta(int idDieta, String nombre, Paciente paciente, LocalDate fechaInicial, double pesoInicial, LocalDate fechaFinal, double pesoFinal) {
         this.idDieta = idDieta;
         this.nombre = nombre;
-        this.idPaciente = idPaciente;
+        this.paciente = paciente;
         this.fechaInicial = fechaInicial;
         this.pesoInicial = pesoInicial;
         this.fechaFinal = fechaFinal;
@@ -31,9 +31,9 @@ public class Dieta {
     }
     //3_sin_ID
 
-    public Dieta(String nombre, int idPaciente, LocalDate fechaInicial, double pesoInicial, LocalDate fechaFinal, double pesoFinal) {
+    public Dieta(String nombre, Paciente paciente, LocalDate fechaInicial, double pesoInicial, LocalDate fechaFinal, double pesoFinal) {
         this.nombre = nombre;
-        this.idPaciente = idPaciente;
+        this.paciente = paciente;
         this.fechaInicial = fechaInicial;
         this.pesoInicial = pesoInicial;
         this.fechaFinal = fechaFinal;
@@ -52,11 +52,11 @@ public class Dieta {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public int getIdPaciente() {
-        return idPaciente;
+    public Paciente getPaciente() {
+        return paciente;
     }
-    public void setIdPaciente(int idPaciente) {
-        this.idPaciente = idPaciente;
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
     public LocalDate getFechaInicial() {
         return fechaInicial;
@@ -86,7 +86,7 @@ public class Dieta {
 
     @Override
     public String toString() {
-        return "Dieta{" + "idDieta=" + idDieta + ", nombre=" + nombre + ", idPaciente=" + idPaciente + ", fechaInicial=" + fechaInicial + ", pesoInicial=" + pesoInicial + ", fechaFinal=" + fechaFinal + ", pesoFinal=" + pesoFinal + '}';
+        return "Dieta{" + "idDieta=" + idDieta + ", nombre=" + nombre + ", idPaciente=" + paciente + ", fechaInicial=" + fechaInicial + ", pesoInicial=" + pesoInicial + ", fechaFinal=" + fechaFinal + ", pesoFinal=" + pesoFinal + '}';
     }
 
    
