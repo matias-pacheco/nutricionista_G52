@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-10-2023 a las 21:25:07
+-- Tiempo de generación: 10-10-2023 a las 02:46:02
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -63,7 +63,8 @@ CREATE TABLE `dieta_comida` (
   `idDietaComida` int(11) NOT NULL,
   `idComida` int(11) NOT NULL,
   `idDieta` int(11) NOT NULL,
-  `horario` enum('DESAYUNO','ALMUERZO','MERIENDA','CENA','SNACK') NOT NULL
+  `horario` enum('DESAYUNO','ALMUERZO','MERIENDA','CENA','SNACK') NOT NULL,
+  `porcion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -78,6 +79,19 @@ CREATE TABLE `historial_peso` (
   `fecha` date NOT NULL,
   `peso` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `historial_peso`
+--
+
+INSERT INTO `historial_peso` (`idHistorialPeso`, `idPaciente`, `fecha`, `peso`) VALUES
+(1, 1, '2023-10-04', 71.5),
+(2, 1, '2023-10-03', 70),
+(3, 2, '2023-10-05', 80),
+(4, 1, '2022-04-17', 58.8),
+(5, 2, '2023-09-07', 78),
+(6, 2, '2023-10-07', 82),
+(7, 4, '2023-10-07', 84);
 
 -- --------------------------------------------------------
 
@@ -100,8 +114,9 @@ CREATE TABLE `paciente` (
 --
 
 INSERT INTO `paciente` (`idPaciente`, `dni`, `apellido`, `nombre`, `domicilio`, `telefono`, `estado`) VALUES
-(1, 20333444, 'Giraldo', 'Romualdo', 'Calle 321', '11 30032002', 0),
-(2, 40666777, 'Lang', 'Rodrigo', 'Calle Baja 321', '11 50054004', 0);
+(1, 20333444, 'Giraldo', 'Romualdo', 'Calle 321', '11 30032002', 1),
+(2, 40666777, 'Lang', 'Rodrigo', 'Calle Baja 321', '11 50054004', 1),
+(4, 70888999, 'Mujica', 'Sergio', 'Calle Pobre 123', '11 90092002', 1);
 
 --
 -- Índices para tablas volcadas
@@ -119,14 +134,14 @@ ALTER TABLE `comida`
 --
 ALTER TABLE `dieta`
   ADD PRIMARY KEY (`idDieta`),
-  ADD KEY `idPaciente` (`idPaciente`);
+  ADD UNIQUE KEY `idPaciente` (`idPaciente`,`fechaInicial`);
 
 --
 -- Indices de la tabla `dieta_comida`
 --
 ALTER TABLE `dieta_comida`
   ADD PRIMARY KEY (`idDietaComida`),
-  ADD UNIQUE KEY `idComida` (`idComida`,`horario`),
+  ADD UNIQUE KEY `idComida` (`idComida`,`idDieta`,`horario`),
   ADD KEY `idDieta` (`idDieta`);
 
 --
@@ -134,7 +149,7 @@ ALTER TABLE `dieta_comida`
 --
 ALTER TABLE `historial_peso`
   ADD PRIMARY KEY (`idHistorialPeso`),
-  ADD KEY `idPaciente` (`idPaciente`);
+  ADD UNIQUE KEY `idPaciente` (`idPaciente`,`fecha`);
 
 --
 -- Indices de la tabla `paciente`
@@ -170,13 +185,13 @@ ALTER TABLE `dieta_comida`
 -- AUTO_INCREMENT de la tabla `historial_peso`
 --
 ALTER TABLE `historial_peso`
-  MODIFY `idHistorialPeso` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idHistorialPeso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `paciente`
 --
 ALTER TABLE `paciente`
-  MODIFY `idPaciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idPaciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
