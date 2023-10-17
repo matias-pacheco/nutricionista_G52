@@ -5,7 +5,7 @@
  */
 package nutricionista_g52.entidades;
 
-import nutricionista_G52.entidades.enumeraciones.HorarioAlimenticio;
+import nutricionista_g52.entidades.enumeraciones.HorarioAlimenticio;
 
 /**
  *
@@ -16,18 +16,21 @@ public class Dieta_Comida {
     private Comida comida;
     private Dieta dieta;
     private HorarioAlimenticio horario;
+    private int porcion;
 
-    public Dieta_Comida(int idDietaComida, Comida comida, Dieta dieta, HorarioAlimenticio horario) {
+    public Dieta_Comida(int idDietaComida, Comida comida, Dieta dieta, HorarioAlimenticio horario, int porcion) {
         this.idDietaComida = idDietaComida;
         this.comida = comida;
         this.dieta = dieta;
         this.horario = horario;
+        this.porcion = porcion;
     }
 
-    public Dieta_Comida(Comida comida, Dieta dieta, HorarioAlimenticio horario) {
+    public Dieta_Comida(Comida comida, Dieta dieta, HorarioAlimenticio horario, int porcion) {
         this.comida = comida;
         this.dieta = dieta;
         this.horario = horario;
+        this.porcion = porcion;
     }
     
     public Dieta_Comida(){}
@@ -59,9 +62,17 @@ public class Dieta_Comida {
     public void setHorario(HorarioAlimenticio horario) {
         this.horario = horario;
     }
+    
+    public int getPorcion(){
+        return porcion;
+    }
+    public void setPorcion(int porcion){
+        this.porcion = porcion;
+    }
 
     @Override
     public String toString() {
-        return "idDietaComida: "+idDietaComida+"\ncomida: "+comida+"\ndieta: "+dieta+"\nhorario: "+horario+"\n";
+        return "idDietaComida: "+idDietaComida+"\ncomida: "+comida+"\ndieta: "+dieta+"\nhorario: "+horario
+                +"\nporcion: "+porcion+"\n";
     }
 }

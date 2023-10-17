@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nutricionista_G52.entidades.enumeraciones;
+package nutricionista_g52.entidades.enumeraciones;
 
 /**
  *

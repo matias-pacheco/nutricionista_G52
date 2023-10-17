@@ -5,6 +5,7 @@
  */
 package nutricionista_g52.accesoADatos;
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,6 +52,8 @@ public class PacienteData {
             }
         } catch(SQLException sqle){
             System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
         } catch(Exception e){
             e.printStackTrace();
         } finally {
@@ -85,6 +88,46 @@ public class PacienteData {
             }
         } catch(SQLException sqle){
             System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return paciente;
+    }
+    
+    public Paciente buscarpacientePorDni(int dni){
+        String sql = "SELECT * FROM paciente WHERE dni = ? AND estado = 1;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Paciente paciente = null;
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, dni);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                paciente = new Paciente();
+                paciente.setIdPaciente(rs.getInt("idPaciente"));
+                paciente.setDni(rs.getInt("dni"));
+                paciente.setApellido(rs.getString("apellido"));
+                paciente.setNombre(rs.getString("nombre"));
+                paciente.setDomicilio(rs.getString("domicilio"));
+                paciente.setTelefono(rs.getString("telefono"));
+                paciente.setEstado(rs.getBoolean("estado"));
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontro el paciente", "  Mensaje", 1);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
         } catch(Exception e){
             e.printStackTrace();
         } finally {
@@ -119,6 +162,8 @@ public class PacienteData {
             }
         } catch(SQLException sqle){
             System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
         } catch(Exception e){
             e.printStackTrace();
         } finally {
@@ -143,6 +188,34 @@ public class PacienteData {
             }
         } catch(SQLException sqle){
             System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+        }
+    }
+    
+    public void restaurarPaciente(int id){
+        String sql = "UPDATE paciente SET estado = 1 WHERE idPaciente = ? AND estado = 0;";
+        PreparedStatement ps = null;
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, id);
+            
+            int restaurados = ps.executeUpdate();
+            
+            if(restaurados == 1){
+                JOptionPane.showMessageDialog(null, "Paciente restaurado", "  Mensaje", 1);
+            } else{
+                JOptionPane.showMessageDialog(null, "No se encontro paciente", "  Mensaje", 1);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
         } catch(Exception e){
             e.printStackTrace();
         } finally {
