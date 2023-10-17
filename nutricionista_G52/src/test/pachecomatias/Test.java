@@ -8,10 +8,17 @@ package test.pachecomatias;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import nutricionista_g52.accesoADatos.ComidaData;
+import nutricionista_g52.accesoADatos.DietaData;
+//import nutricionista_g52.accesoADatos.Dieta_ComidaData;//QUITAR COMENTARIO cuando suba el controlador
 import nutricionista_g52.accesoADatos.Historial_PesoData;
 import nutricionista_g52.accesoADatos.PacienteData;
+import nutricionista_g52.entidades.Comida;
+import nutricionista_g52.entidades.Dieta;
+import nutricionista_g52.entidades.Dieta_Comida;
 import nutricionista_g52.entidades.Historial_Peso;
 import nutricionista_g52.entidades.Paciente;
+import nutricionista_g52.entidades.enumeraciones.HorarioAlimenticio;
 
 /**
  *
@@ -195,5 +202,365 @@ public class Test {
 //        for(Historial_Peso hisPeso : registro2){
 //            System.out.println(hisPeso);
 //        }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------- P R U E B A S   C R U D   D I E T A ----------
+        DietaData dieData = new DietaData();
+        
+//----- CREATE dieta -----
+//--- die1 ---
+////    --- paciente ---
+//        Paciente pac1Lectura6 = pacData.buscarPaciente(1);
+////    ----------------
+//        Dieta die1 = new Dieta("Mediterranea", pac1Lectura6, LocalDate.now(), 72, LocalDate.of(2023, 
+//                Month.DECEMBER, 10), 80);
+//        
+//        dieData.guardarDieta(die1);
+        
+//--- die2 ---
+////    --- paciente ---
+//        Paciente pac2Lectura5 = pacData.buscarPaciente(2);
+////    ----------------
+//        Dieta die2 = new Dieta("Vegetariana", pac2Lectura5, LocalDate.now(), 82, LocalDate.of(2024, 
+//                Month.JANUARY, 10), 74);
+//        
+//        dieData.guardarDieta(die2);
+
+//--- die3 ---
+////    --- paciente ---
+//        Paciente pac3Lectura2 = pacData.buscarPaciente(4);
+////    ----------------
+//        Dieta die3 = new Dieta("Proteica", pac3Lectura2, LocalDate.now(), 90, LocalDate.of(2023, 
+//                Month.DECEMBER, 8), 80);
+//        
+//        dieData.guardarDieta(die3);
+
+//--- die4 ---
+////    --- paciente ---
+//        Paciente pac3Lectura3 = pacData.buscarPaciente(4);
+////    ----------------
+//        Dieta die4 = new Dieta("Proteica", pac3Lectura3, LocalDate.of(2023, Month.DECEMBER, 9), 81, 
+//                LocalDate.of(2024, Month.APRIL, 17), 73);
+//        
+//        dieData.guardarDieta(die4);
+
+//----- READ dieta -----
+//--- die1 ---
+////    --- paciente ---
+//        Paciente pac1Lectura7 = pacData.buscarPaciente(1);
+////    ----------------
+//        System.out.println(dieData.buscarDietaPorIdPaciente(pac1Lectura7.getIdPaciente()));
+
+//----- UPDATE dieta -----
+//--- die1 ---
+//        Dieta die1Lectura1 = dieData.buscarDietaPorIdPaciente(1);
+        
+//        die1Lectura1.setFechaInicial(LocalDate.of(2022, Month.OCTOBER, 7));
+//        die1Lectura1.setPesoInicial(65.5);
+//        die1Lectura1.setFechaFinal(LocalDate.of(2023, Month.JANUARY, 7));
+//        die1Lectura1.setPesoFinal(75.5);
+//        
+//        dieData.modificarDieta(die1Lectura1);
+
+//----- READ dieta -----
+//--- die2 ---
+////    --- paciente ---
+//        Paciente pac1Lectura8 = pacData.buscarPaciente(1);
+////    ----------------
+//        System.out.println(dieData.buscarDietaPorIdPaciente(pac1Lectura8.getIdPaciente()));
+
+//----- UPDATE dieta -----
+//--- die2 ---
+//        Dieta die1Lectura2 = dieData.buscarDieta(1);
+//        
+//        die1Lectura2.setFechaInicial(LocalDate.of(2025, Month.AUGUST, 17));
+//        
+//        dieData.modificarDieta(die1Lectura2);
+        
+//----- UPDATE dieta -----
+//--- die3 ---
+//        Dieta die1Lectura3 = dieData.buscarDietaPorIdPaciente(1);
+//        
+//        Dieta dieta1Aux = new Dieta("Paleo", die1Lectura3.getPaciente(), LocalDate.of(2023, Month.JANUARY, 8), 
+//                70, LocalDate.of(2023, Month.AUGUST, 7), 76);
+//        dieta1Aux.setIdDieta(18);
+//        
+//        dieData.modificarDieta(dieta1Aux);
+
+//----- INSERT dieta -----
+//--- die4 ---
+////    --- paciente ---
+//        Paciente pac4 = new Paciente(12555777, "Lata", "Ezequiel", "Calle Cien 123", "11 3456 3455", true);
+//        
+//        pacData.guardarPaciente(pac4);
+////    ----------------
+//        Dieta die4 = new Dieta("Hipocalórica", pac4, LocalDate.of(2022, Month.SEPTEMBER, 21), 65, 
+//                LocalDate.of(2023, Month.MARCH, 23), 70);
+//        
+//        dieData.guardarDieta(die4);
+
+//----- READ lista paciente dieta terminada -----
+//--- registro1 ---
+//        List<Object> registro = dieData.listarPacientesDietaTerminada();
+//        String esp = "          ";
+//        
+//        for(Object obj : registro){
+//            if(obj instanceof Paciente){
+//                Paciente paciente = (Paciente)obj;
+//                
+//                System.out.println(esp+paciente+"\n");
+//            } else {
+//                Dieta dieta = (Dieta)obj;
+//                
+//                System.out.println(dieta);
+//            }
+//        }
+
+//----- READ lista paciente dieta terminada B -----
+//--- registro 2 ---
+//    List<Object> registro2 = dieData.listarPacientesDietaTerminadaB();
+//        String esp2 = "          ";
+//        
+//        for(Object obj : registro2){
+//            if(obj instanceof Paciente){
+//                Paciente paciente = (Paciente)obj;
+//                
+//                System.out.println(esp2+paciente+"\n");
+//            } else {
+//                Dieta dieta = (Dieta)obj;
+//                
+//                System.out.println(dieta);
+//            }
+//        }
+
+//----- READ lista pacientes dieta vigente -----
+////--- registro 3 ---
+//        List<Object> registro3 = dieData.listarPacientesDietaVigente();
+//        String esp = "          ";
+//        
+//        for(Object obj : registro3){
+//            if(obj instanceof Paciente){
+//                Paciente paciente = (Paciente)obj;
+//                
+//                System.out.println(esp+paciente+"\n");
+//            } else {
+//                Dieta dieta = (Dieta)obj;
+//                
+//                System.out.println("fechaFinal: "+dieta.getFechaFinal()+"\n-------------------------------");
+//            }
+//        }
+
+//----- READ listar pacientes que no alcanzaron peso buscado -----
+//--- registro 4 ---
+//    --- paciente ---
+//        Paciente pac4Lectura1 = pacData.buscarPaciente(5);
+////    --------------
+////    --- historial peso ---
+//        Historial_Peso hisPesoPac4 = new Historial_Peso(pac4Lectura1, LocalDate.of(2022, Month.SEPTEMBER, 21), 65);
+//        Historial_Peso hisPesoPac4B = new Historial_Peso(pac4Lectura1, LocalDate.of(2023, Month.JANUARY, 21), 67);
+//        Historial_Peso hisPesoPac4C = new Historial_Peso(pac4Lectura1, LocalDate.of(2023, Month.MARCH, 23), 68.5);
+//        
+//        hisPesoData.guardarHistorial_Peso(hisPesoPac4);
+//        hisPesoData.guardarHistorial_Peso(hisPesoPac4B);
+//        hisPesoData.guardarHistorial_Peso(hisPesoPac4C);
+//    ----------------------
+//        List<Object> registro = dieData.listarPacientesQueNoAlcanzaronPesoBuscado();
+//        String esp = "          ";
+//        
+//        for(Object obj : registro){
+//            if(obj instanceof Paciente){
+//                Paciente paciente = (Paciente)obj;
+//                
+//                System.out.println(esp+paciente+"\n");
+//            } else if(obj instanceof Dieta){
+//                Dieta dieta = (Dieta)obj;
+//                
+//                System.out.println(dieta);
+//            } else {
+//                Historial_Peso historialPeso = (Historial_Peso)obj;
+//                
+//                System.out.println(historialPeso+"\n-----------------------------------------------");
+//            }
+//        }
+
+//--- registro 5 ---
+//        List<Object> registro2 = dieData.listarPacientesQueNoAlcanzaronPesoBuscado();
+//        String esp = "          ";
+//        
+//        for(Object obj : registro2){
+//            if(obj instanceof Paciente){
+//                Paciente paciente = (Paciente)obj;
+//                
+//                System.out.println(esp+paciente+"\n");
+//            } else if(obj instanceof Dieta){
+//                Dieta dieta = (Dieta)obj;
+//                
+//                System.out.println("fechaFinal: "+dieta.getFechaFinal()+"\nPesoFinal: "+dieta.getPesoFinal()+"\n");
+//            } else {
+//                Historial_Peso historialPeso = (Historial_Peso)obj;
+//                
+//                System.out.println("fecha: "+historialPeso.getFecha()+"\npeso: "+historialPeso.getPeso()
+//                        +"\n-----------------------------------------------");
+//            }
+//        }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------- P R U E B A S   C R U D   C O M I D A ----------
+        ComidaData comiData = new ComidaData();
+        
+//----- CREATE comida -----
+//--- com1 ---
+//        Comida com1 = new Comida("Ensalada Natural", "Sin sal y aceite", 50, true);
+//        
+//        comiData.guardarComida(com1);
+        
+//----- READ comida -----
+//--- com1 ---
+//        Comida com1Lec1 = comiData.buscarComidaPorId(2);
+//        String esp = "        ";
+//        
+//        System.out.println(esp+com1Lec1);
+
+//----- READ comida por nombre -----
+//--- com1 ---
+//        Comida com1Lec2 = comiData.buscarComidaPorNombre("Pechuga");
+//        String esp = "        ";
+//        
+//        System.out.println(esp+com1Lec2);
+
+//----- UPDATE comida -----
+//--- com1 ---
+//        Comida com1Lec3 = comiData.buscarComidaPorId(2);
+//        
+//        com1Lec3.setNombre("Asado");
+//        com1Lec3.setDetalle("Al horno");
+//        com1Lec3.setCantCalorias(1500);
+//        
+//        comiData.modificarComida(com1Lec3);
+        
+//--- com1 ---
+//        Comida com1Lec4 = comiData.buscarComidaPorId(1);
+//        
+//        com1Lec4.setNombre("Pechuga");
+//        com1Lec4.setDetalle("Al horno");
+//        com1Lec4.setCantCalorias(400);
+//        
+//        comiData.modificarComida(com1Lec4);
+
+//----- DELETE(lógico) paciente -----
+//--- com1 ---
+//        comiData.borrarComida(comiData.buscarComidaPorId(1).getIdComida());
+
+//----- UPDATE(restaurar) comida -----
+//--- com1 ---
+//        comiData.restaurarComida(1);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------- P R U E B A S   C R U D   P A C I E N T E ----------
+//----- READ paciente (por DNI) -----
+//--- pac1 ---
+//        String esp = "          ";
+//    
+//        System.out.println(esp+pacData.buscarpacientePorDni(20333444));
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------- P R U E B A S   C R U D   C O M I D A ----------
+//----- READ listar comidas con cantidad de calorias menor al seleccionado -----
+//--- list1 ---
+//        List<Comida> registro = comiData.listarComidasConMenorCantidadCalorias(401);
+//        String esp = "        ";
+//        
+//        for(Comida comida : registro){
+//            System.out.println(esp+comida+"\n");
+//        }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------- P R U E B A S   C R U D   D I E T A _ C O M I D A ----------
+//        Dieta_ComidaData dieComiData = new Dieta_ComidaData(); //QUITAR COMENTARIO cuando suba el controlador
+        
+//----- CREATE dieta_comida -----
+//--- dieCom1 ---
+//    --- paciente ---
+//        Paciente paciente = pacData.buscarpacientePorDni(40666777);
+////    ----------------
+////    --- comida ---
+//        Comida comida = comiData.buscarComidaPorNombre("Ensalada Natural");
+////    --------------
+////    --- dieta ---
+//        Dieta dieta = dieData.buscarDietaPorIdPaciente(paciente.getIdPaciente());
+////    -------------
+//        Dieta_Comida dieCom1 = new Dieta_Comida(comida, dieta, HorarioAlimenticio.DESAYUNO, 200);
+//        
+//        dieComiData.guardarDieta_Comida(dieCom1);
+
+//--- dieCom2 ---
+//    --- paciente ---
+//        Paciente paciente1 = pacData.buscarpacientePorDni(40666777);
+////    ----------------
+////    --- comida ---
+//        Comida comida1 = new Comida("Carne con Papas", "Hervido", 800, true);
+//        comiData.guardarComida(comida1);
+////    --------------
+////    --- dieta ---
+//        Dieta dieta1 = dieData.buscarDietaPorIdPaciente(paciente1.getIdPaciente());
+////    -------------
+//        Dieta_Comida dieCom2 = new Dieta_Comida(comida1, dieta1, HorarioAlimenticio.ALMUERZO, 450);
+//        
+//        dieComiData.guardarDieta_Comida(dieCom2);
+
+//--- dieCom3 ---
+//    --- paciente ---
+//        Paciente paciente3 = pacData.buscarPaciente(4);
+////    ----------------
+////    --- comida ---
+//        Comida comida2 = comiData.buscarComidaPorNombre("Carne con Papas");
+////    --------------
+////    --- dieta ---
+//        Dieta dieta2 = dieData.buscarDietaPorIdPaciente(paciente3.getIdPaciente());
+////    -------------
+//        Dieta_Comida dieCom3 = new Dieta_Comida(comida2, dieta2, HorarioAlimenticio.ALMUERZO, 500);
+//        
+//        dieComiData.guardarDieta_Comida(dieCom3);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------- P R U E B A S   C R U D   D I E T A ----------
+//----- READ dieta por DNI -----
+//--- dieta ---
+//        System.out.println(dieData.buscarDietaPorDni(40666777));
+
+//----- READ dieta por ID paciente -----   
+//--- dieta ---
+//        System.out.println(dieData.buscarDietaPorIdPaciente(pacData.buscarpacientePorDni(40666777).getIdPaciente()));
+
+//----- READ dieta por ID dieta -----
+//--- dieta ---
+//        String esp = "       ";
+//        System.out.println(esp+dieData.buscarDieta(60));
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------- P R U E B A S   C R U D   D I E T A _ C O M I D A ----------
+//----- READ dieta_comida -----
+//--- dieComida ---
+//        System.out.println(dieComiData.buscarDieta_Comida("Carne con Papas", 40666777, 
+//                HorarioAlimenticio.ALMUERZO));
+
+//----- READ dieta_comida B-----
+//--- dieComida ---
+//        System.out.println(dieComiData.buscarDieta_ComidaB("Carne con Papas", 40666777, 
+//                HorarioAlimenticio.ALMUERZO));
     }
 }
