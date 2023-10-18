@@ -10,7 +10,7 @@ import java.time.Month;
 import java.util.List;
 import nutricionista_g52.accesoADatos.ComidaData;
 import nutricionista_g52.accesoADatos.DietaData;
-//import nutricionista_g52.accesoADatos.Dieta_ComidaData;//QUITAR COMENTARIO cuando suba el controlador
+import nutricionista_g52.accesoADatos.Dieta_ComidaData;
 import nutricionista_g52.accesoADatos.Historial_PesoData;
 import nutricionista_g52.accesoADatos.PacienteData;
 import nutricionista_g52.entidades.Comida;
@@ -486,7 +486,7 @@ public class Test {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //---------- P R U E B A S   C R U D   D I E T A _ C O M I D A ----------
-//        Dieta_ComidaData dieComiData = new Dieta_ComidaData(); //QUITAR COMENTARIO cuando suba el controlador
+        Dieta_ComidaData dieComiData = new Dieta_ComidaData();
         
 //----- CREATE dieta_comida -----
 //--- dieCom1 ---
@@ -562,5 +562,50 @@ public class Test {
 //--- dieComida ---
 //        System.out.println(dieComiData.buscarDieta_ComidaB("Carne con Papas", 40666777, 
 //                HorarioAlimenticio.ALMUERZO));
+
+//----- UPDATE modificar dieta_comida -----
+//--- dieComida1 ---
+//    --- comida ---
+//        Comida comida = comiData.buscarComidaPorNombre("Carne con Papas");
+////    --------------
+////    --- dieta ---
+//        Dieta dieta = dieData.buscarDietaPorDni(40666777);
+////    -------------
+//        Dieta_Comida dieComida1 = new Dieta_Comida(comida, dieta, HorarioAlimenticio.ALMUERZO, 400);
+//        
+//        dieComiData.modificarDieta_Comida(dieComida1);
+
+//----- DELETE borrar comida de dieta -----
+//--- dieComida ---
+//        Dieta_Comida dieComida = dieComiData.buscarDieta_Comida("Carne con Papas", 40666777, 
+//                HorarioAlimenticio.ALMUERZO);
+//        
+//        dieComiData.borrarComidaDeDieta(dieComida);
+
+//----- INSERT dieta_comida -----
+//--- dieComida ---
+//    --- comida ---
+//        Comida comida = comiData.buscarComidaPorNombre("Carne con Papas");
+////    --------------
+////    --- dieta ---
+//        Dieta dieta = dieData.buscarDietaPorDni(40666777);
+////    -------------
+//        Dieta_Comida dieComida = new Dieta_Comida(comida, dieta, HorarioAlimenticio.ALMUERZO, 350);
+//        
+//        dieComiData.guardarDieta_Comida(dieComida);
+
+//----- DELETE dieta_comida -----
+////--- dieComida ---
+//        dieComiData.borrarComida_Dieta(6);
+
+//----- READ listar comidas de dieta por ID paciente -----
+//--- registro1 ---
+//        List<Comida> registro1 = dieComiData.listarComidasDeDietaPorIdPaciente(
+//                pacData.buscarpacientePorDni(40666777).getIdPaciente());
+//        String esp = "        ";
+//        
+//        for(Comida comi : registro1){
+//            System.out.println(esp+comi+"\n");
+//        }
     }
 }
