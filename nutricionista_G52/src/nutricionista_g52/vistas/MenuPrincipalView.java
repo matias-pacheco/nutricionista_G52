@@ -32,6 +32,9 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenItPacientes = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenItComidas = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenItConsultasPacientes = new javax.swing.JMenuItem();
+        jMenItConsultasComidas = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenItTurnos = new javax.swing.JMenuItem();
         jMenItRecordatorios = new javax.swing.JMenuItem();
@@ -49,7 +52,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         );
         jDesPaEscritorioLayout.setVerticalGroup(
             jDesPaEscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 699, Short.MAX_VALUE)
+            .addGap(0, 701, Short.MAX_VALUE)
         );
 
         jMenu1.setText("Pacientes");
@@ -70,6 +73,21 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenu2.add(jMenItComidas);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu5.setText("Consultas");
+
+        jMenItConsultasPacientes.setText("Pacientes");
+        jMenItConsultasPacientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenItConsultasPacientesActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenItConsultasPacientes);
+
+        jMenItConsultasComidas.setText("Comidas");
+        jMenu5.add(jMenItConsultasComidas);
+
+        jMenuBar1.add(jMenu5);
 
         jMenu3.setText("Turnos");
 
@@ -124,6 +142,24 @@ public class MenuPrincipalView extends javax.swing.JFrame {
 //        System.out.println(jDesPaEscritorio.getComponentCount());
     }//GEN-LAST:event_jMenItPacientesActionPerformed
 
+    private void jMenItConsultasPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenItConsultasPacientesActionPerformed
+        // TODO add your handling code here:
+        
+        jDesPaEscritorio.removeAll();
+        jDesPaEscritorio.repaint();
+        
+        ConsultasPacientesView conPacV = new ConsultasPacientesView();
+        conPacV.setVisible(true);
+        
+        int x = (jDesPaEscritorio.getWidth() - conPacV.getWidth()) / 2;
+        int y = (jDesPaEscritorio.getHeight() - conPacV.getHeight()) / 2;
+        
+        conPacV.setLocation(x, y);
+        
+        jDesPaEscritorio.add(conPacV);
+        jDesPaEscritorio.moveToFront(conPacV);
+    }//GEN-LAST:event_jMenItConsultasPacientesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -163,6 +199,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JDesktopPane jDesPaEscritorio;
     private javax.swing.JMenuItem jMenItComidas;
+    private javax.swing.JMenuItem jMenItConsultasComidas;
+    private javax.swing.JMenuItem jMenItConsultasPacientes;
     private javax.swing.JMenuItem jMenItPacientes;
     private javax.swing.JMenuItem jMenItRecordatorios;
     private javax.swing.JMenuItem jMenItSalir;
@@ -171,6 +209,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }
