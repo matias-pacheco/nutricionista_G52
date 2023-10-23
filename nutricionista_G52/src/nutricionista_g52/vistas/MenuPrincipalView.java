@@ -32,6 +32,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenItPacientes = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenItComidas = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenItDietasNueva = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenItConsultasPacientes = new javax.swing.JMenuItem();
         jMenItConsultasComidas = new javax.swing.JMenuItem();
@@ -70,9 +72,26 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenu2.setText("Comidas");
 
         jMenItComidas.setText("Comidas");
+        jMenItComidas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenItComidasActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenItComidas);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu6.setText("Dietas");
+
+        jMenItDietasNueva.setText("Nueva");
+        jMenItDietasNueva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenItDietasNuevaActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenItDietasNueva);
+
+        jMenuBar1.add(jMenu6);
 
         jMenu5.setText("Consultas");
 
@@ -85,6 +104,11 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenu5.add(jMenItConsultasPacientes);
 
         jMenItConsultasComidas.setText("Comidas");
+        jMenItConsultasComidas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenItConsultasComidasActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenItConsultasComidas);
 
         jMenuBar1.add(jMenu5);
@@ -160,6 +184,60 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jDesPaEscritorio.moveToFront(conPacV);
     }//GEN-LAST:event_jMenItConsultasPacientesActionPerformed
 
+    private void jMenItComidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenItComidasActionPerformed
+        // TODO add your handling code here:
+        
+        jDesPaEscritorio.removeAll();
+        jDesPaEscritorio.repaint();
+        
+        ComidasView comiV = new ComidasView();
+        comiV.setVisible(true);
+        
+        int x = (jDesPaEscritorio.getWidth() - comiV.getWidth()) / 2;
+        int y = (jDesPaEscritorio.getHeight() - comiV.getHeight()) / 2;
+        
+        comiV.setLocation(x, y);
+        
+        jDesPaEscritorio.add(comiV);
+        jDesPaEscritorio.moveToFront(comiV);
+    }//GEN-LAST:event_jMenItComidasActionPerformed
+
+    private void jMenItConsultasComidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenItConsultasComidasActionPerformed
+        // TODO add your handling code here:
+        
+        jDesPaEscritorio.removeAll();
+        jDesPaEscritorio.repaint();
+        
+        ConsultasComidasView conComiV = new ConsultasComidasView();
+        conComiV.setVisible(true);
+        
+        int x = (jDesPaEscritorio.getWidth() - conComiV.getWidth()) / 2;
+        int y = (jDesPaEscritorio.getHeight() - conComiV.getHeight()) / 2;
+        
+        conComiV.setLocation(x, y);
+        
+        jDesPaEscritorio.add(conComiV);
+        jDesPaEscritorio.moveToFront(conComiV);
+    }//GEN-LAST:event_jMenItConsultasComidasActionPerformed
+
+    private void jMenItDietasNuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenItDietasNuevaActionPerformed
+        // TODO add your handling code here:
+        
+        jDesPaEscritorio.removeAll();
+        jDesPaEscritorio.repaint();
+        
+        NuevaDietaView newDieV = new NuevaDietaView();
+        newDieV.setVisible(true);
+        
+        int x = (jDesPaEscritorio.getWidth() - newDieV.getWidth()) / 2;
+        int y = (jDesPaEscritorio.getHeight() - newDieV.getHeight()) / 2;
+        
+        newDieV.setLocation(x, y);
+        
+        jDesPaEscritorio.add(newDieV);
+        jDesPaEscritorio.moveToFront(newDieV);
+    }//GEN-LAST:event_jMenItDietasNuevaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -201,6 +279,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenItComidas;
     private javax.swing.JMenuItem jMenItConsultasComidas;
     private javax.swing.JMenuItem jMenItConsultasPacientes;
+    private javax.swing.JMenuItem jMenItDietasNueva;
     private javax.swing.JMenuItem jMenItPacientes;
     private javax.swing.JMenuItem jMenItRecordatorios;
     private javax.swing.JMenuItem jMenItSalir;
@@ -210,6 +289,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }

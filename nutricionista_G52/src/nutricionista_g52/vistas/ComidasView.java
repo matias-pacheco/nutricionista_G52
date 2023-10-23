@@ -17,12 +17,12 @@ import nutricionista_g52.vistas.PesoView;
  *
  * @author Matías Pacheco
  */
-public class PacientesView extends javax.swing.JInternalFrame {
+public class ComidasView extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form PacientesView
      */
-    public PacientesView() {
+    public ComidasView() {
         initComponents();
     }
 
@@ -34,32 +34,31 @@ public class PacientesView extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSeparator2 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTabPacientes = new javax.swing.JTable();
+        jTabComidas = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jButEditar = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        jButEliminar = new javax.swing.JButton();
+        jButSalir = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jButNuevo = new javax.swing.JButton();
+        jButNueva = new javax.swing.JButton();
         jTexFiBuscar = new javax.swing.JTextField();
         jButBuscar = new javax.swing.JButton();
         jComBoBuscar = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JSeparator();
 
-        jTabPacientes.setModel(new javax.swing.table.DefaultTableModel(
+        jTabComidas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTabPacientes);
+        jScrollPane1.setViewportView(jTabComidas);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,12 +84,12 @@ public class PacientesView extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton5.setText("Eliminar");
+        jButEliminar.setText("Eliminar");
 
-        jButton6.setText("Salir");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        jButSalir.setText("Salir");
+        jButSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                jButSalirActionPerformed(evt);
             }
         });
 
@@ -102,9 +101,9 @@ public class PacientesView extends javax.swing.JInternalFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jButEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5)
+                .addComponent(jButEliminar)
                 .addGap(360, 360, 360)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
         );
         jPanel2Layout.setVerticalGroup(
@@ -113,8 +112,8 @@ public class PacientesView extends javax.swing.JInternalFrame {
                 .addGap(6, 6, 6)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButEditar)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
+                    .addComponent(jButEliminar)
+                    .addComponent(jButSalir))
                 .addGap(12, 12, 12))
         );
 
@@ -122,14 +121,14 @@ public class PacientesView extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("PACIENTES");
+        jLabel1.setText("COMIDAS");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(263, 263, 263)
+                .addGap(271, 271, 271)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -141,16 +140,16 @@ public class PacientesView extends javax.swing.JInternalFrame {
                 .addGap(12, 12, 12))
         );
 
-        jButNuevo.setText("Nuevo");
-        jButNuevo.addActionListener(new java.awt.event.ActionListener() {
+        jButNueva.setText("Nueva");
+        jButNueva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButNuevoActionPerformed(evt);
+                jButNuevaActionPerformed(evt);
             }
         });
 
         jButBuscar.setText("Buscar");
 
-        jComBoBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "POR APELLIDO", "POR DNI" }));
+        jComBoBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "POR NOMBRE", "POR CODIGO" }));
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -160,11 +159,11 @@ public class PacientesView extends javax.swing.JInternalFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jButNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButNueva, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComBoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -178,7 +177,7 @@ public class PacientesView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButBuscar)
-                    .addComponent(jButNuevo)
+                    .addComponent(jButNueva)
                     .addComponent(jComBoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
@@ -195,7 +194,7 @@ public class PacientesView extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -218,55 +217,55 @@ public class PacientesView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         
         if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 2){
-            EditarPacienteView ediPacV = new EditarPacienteView();
-            ediPacV.setVisible(true);
+            EditarComidaView ediComiV = new EditarComidaView();
+            ediComiV.setVisible(true);
         
-            int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - ediPacV.getWidth()) / 2;
-            int y = (MenuPrincipalView.jDesPaEscritorio.getHeight() - ediPacV.getHeight()) / 2;
+            int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - ediComiV.getWidth()) / 2;
+            int y = (MenuPrincipalView.jDesPaEscritorio.getHeight() - ediComiV.getHeight()) / 2;
         
-            ediPacV.setLocation(x, y);
+            ediComiV.setLocation(x, y);
         
-            MenuPrincipalView.jDesPaEscritorio.add(ediPacV);
+            MenuPrincipalView.jDesPaEscritorio.add(ediComiV);
         
-            ediPacV.moveToFront();
+            ediComiV.moveToFront();
         }
     }//GEN-LAST:event_jButEditarActionPerformed
 
-    private void jButNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButNuevoActionPerformed
+    private void jButNuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButNuevaActionPerformed
         // TODO add your handling code here
 
         if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 2){
-            NuevoPacienteView newPacV = new NuevoPacienteView();
-            newPacV.setVisible(true);
+            NuevaComidaView newComiV = new NuevaComidaView();
+            newComiV.setVisible(true);
 
-            int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - newPacV.getWidth()) / 2;
-            int y = (MenuPrincipalView.jDesPaEscritorio.getHeight() - newPacV.getHeight()) / 2;
+            int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - newComiV.getWidth()) / 2;
+            int y = (MenuPrincipalView.jDesPaEscritorio.getHeight() - newComiV.getHeight()) / 2;
 
-            newPacV.setLocation(x, y);
+            newComiV.setLocation(x, y);
 
-            MenuPrincipalView.jDesPaEscritorio.add(newPacV);
+            MenuPrincipalView.jDesPaEscritorio.add(newComiV);
 
-            newPacV.toFront();
+            newComiV.toFront();
             //            newPacV.setBorder(new EmptyBorder(0, 0, 0, 0));
             //            ((BasicInternalFrameUI) newPacV.getUI()).setNorthPane(null);
 
             //            System.out.println(MenuPrincipalView.jDesPaEscritorio.getComponentCount());
         }
-    }//GEN-LAST:event_jButNuevoActionPerformed
+    }//GEN-LAST:event_jButNuevaActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void jButSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButSalirActionPerformed
         // TODO add your handling code here:
         
         this.dispose();
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_jButSalirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButBuscar;
     private javax.swing.JButton jButEditar;
-    private javax.swing.JButton jButNuevo;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButEliminar;
+    private javax.swing.JButton jButNueva;
+    private javax.swing.JButton jButSalir;
     private javax.swing.JComboBox<String> jComBoBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
@@ -275,8 +274,7 @@ public class PacientesView extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTabPacientes;
+    private javax.swing.JTable jTabComidas;
     private javax.swing.JTextField jTexFiBuscar;
     // End of variables declaration//GEN-END:variables
 }

@@ -36,20 +36,21 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTabPacientes = new javax.swing.JTable();
+        jTabConsultasPacientes = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jButPeso = new javax.swing.JButton();
         jButVer = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        jButSalir = new javax.swing.JButton();
         jButDieta = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jComBoBuscar1 = new javax.swing.JComboBox<>();
-        jComBoBuscar2 = new javax.swing.JComboBox<>();
+        jCheBoNoAlcanzoPesoBuscado = new javax.swing.JCheckBox();
+        jComBoBuscarPorDieta = new javax.swing.JComboBox<>();
+        jComBoOrdenarPor = new javax.swing.JComboBox<>();
 
-        jTabPacientes.setModel(new javax.swing.table.DefaultTableModel(
+        jTabConsultasPacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -57,7 +58,7 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
-        jScrollPane1.setViewportView(jTabPacientes);
+        jScrollPane1.setViewportView(jTabConsultasPacientes);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,10 +86,25 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
 
         jButVer.setText("Ver");
         jButVer.setToolTipText("");
+        jButVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButVerActionPerformed(evt);
+            }
+        });
 
-        jButton6.setText("Salir");
+        jButSalir.setText("Salir");
+        jButSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButSalirActionPerformed(evt);
+            }
+        });
 
         jButDieta.setText("Dieta");
+        jButDieta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButDietaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -102,7 +118,7 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButDieta, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(276, 276, 276)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
         );
         jPanel2Layout.setVerticalGroup(
@@ -112,7 +128,7 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButPeso)
                     .addComponent(jButVer)
-                    .addComponent(jButton6)
+                    .addComponent(jButSalir)
                     .addComponent(jButDieta))
                 .addGap(12, 12, 12))
         );
@@ -123,28 +139,35 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Consultas PACIENTES");
 
+        jLabel2.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel2.setText("registro por selección");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(216, 216, 216)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(217, 217, 217))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jLabel1)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
                 .addGap(12, 12, 12))
         );
 
-        jCheckBox1.setText("no alcanzo peso buscado");
+        jCheBoNoAlcanzoPesoBuscado.setText("no alcanzo peso buscado");
 
-        jComBoBuscar1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "POR DIETA VIGENTE", "POR DIETA TERMINADA" }));
+        jComBoBuscarPorDieta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "POR DIETA VIGENTE", "POR DIETA TERMINADA" }));
 
-        jComBoBuscar2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "POR APELLIDO", "POR DNI" }));
+        jComBoOrdenarPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "POR APELLIDO", "POR DNI" }));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -152,11 +175,11 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jComBoBuscar2, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComBoOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
-                .addComponent(jComBoBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComBoBuscarPorDieta, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(jCheckBox1)
+                .addComponent(jCheBoNoAlcanzoPesoBuscado)
                 .addGap(22, 22, 22))
         );
         jPanel4Layout.setVerticalGroup(
@@ -164,9 +187,9 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComBoBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComBoBuscar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1))
+                    .addComponent(jComBoBuscarPorDieta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComBoOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheBoNoAlcanzoPesoBuscado))
                 .addGap(12, 12, 12))
         );
 
@@ -215,21 +238,64 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButPesoActionPerformed
 
+    private void jButDietaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButDietaActionPerformed
+        // TODO add your handling code here:
+        
+        if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 2){
+            DietaView dieV = new DietaView();
+            dieV.setVisible(true);
+            
+            int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - dieV.getWidth()) / 2;
+            int y = (MenuPrincipalView.jDesPaEscritorio.getHeight() - dieV.getHeight()) / 2;
+        
+            dieV.setLocation(x, y);
+            
+            MenuPrincipalView.jDesPaEscritorio.add(dieV);
+            
+            dieV.toFront();
+        }
+    }//GEN-LAST:event_jButDietaActionPerformed
+
+    private void jButVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButVerActionPerformed
+        // TODO add your handling code here:
+        
+        if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 2){
+            VerPacienteView verPacV = new VerPacienteView();
+            verPacV.setVisible(true);
+            
+            int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - verPacV.getWidth()) / 2;
+            int y = (MenuPrincipalView.jDesPaEscritorio.getHeight() - verPacV.getHeight()) / 2;
+        
+            verPacV.setLocation(x, y);
+            
+            MenuPrincipalView.jDesPaEscritorio.add(verPacV);
+            
+            verPacV.toFront();
+        }
+    }//GEN-LAST:event_jButVerActionPerformed
+
+    private void jButSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButSalirActionPerformed
+        // TODO add your handling code here:
+        
+        this.dispose();
+    }//GEN-LAST:event_jButSalirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButDieta;
     private javax.swing.JButton jButPeso;
+    private javax.swing.JButton jButSalir;
     private javax.swing.JButton jButVer;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComBoBuscar1;
-    private javax.swing.JComboBox<String> jComBoBuscar2;
+    private javax.swing.JCheckBox jCheBoNoAlcanzoPesoBuscado;
+    private javax.swing.JComboBox<String> jComBoBuscarPorDieta;
+    private javax.swing.JComboBox<String> jComBoOrdenarPor;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTabPacientes;
+    private javax.swing.JTable jTabConsultasPacientes;
     // End of variables declaration//GEN-END:variables
 }
