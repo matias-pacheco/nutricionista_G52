@@ -39,7 +39,9 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
         jTabConsultasComidas = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jButSalir = new javax.swing.JButton();
-        jButDieta = new javax.swing.JButton();
+        jButAgregar = new javax.swing.JButton();
+        jButEditar = new javax.swing.JButton();
+        jButEliminar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -49,6 +51,11 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
         jButBuscar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jTexFiBuscar = new javax.swing.JTextField();
+        jCheBoDesayuno = new javax.swing.JCheckBox();
+        jCheBoAlmuerzo = new javax.swing.JCheckBox();
+        jCheBoMerienda = new javax.swing.JCheckBox();
+        jCheBoCena = new javax.swing.JCheckBox();
+        jCheBoSnack = new javax.swing.JCheckBox();
         jPanel8 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -58,7 +65,7 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
             }
         ));
         jScrollPane1.setViewportView(jTabConsultasComidas);
@@ -87,10 +94,24 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
             }
         });
 
-        jButDieta.setText("Agregar");
-        jButDieta.addActionListener(new java.awt.event.ActionListener() {
+        jButAgregar.setText("Agregar");
+        jButAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButDietaActionPerformed(evt);
+                jButAgregarActionPerformed(evt);
+            }
+        });
+
+        jButEditar.setText("Editar");
+        jButEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButEditarActionPerformed(evt);
+            }
+        });
+
+        jButEliminar.setText("Eliminar");
+        jButEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButEliminarActionPerformed(evt);
             }
         });
 
@@ -99,9 +120,13 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(452, 452, 452)
-                .addComponent(jButDieta, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jButAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(276, 276, 276)
                 .addComponent(jButSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
         );
@@ -111,7 +136,9 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
                 .addGap(6, 6, 6)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButSalir)
-                    .addComponent(jButDieta))
+                    .addComponent(jButAgregar)
+                    .addComponent(jButEditar)
+                    .addComponent(jButEliminar))
                 .addGap(12, 12, 12))
         );
 
@@ -129,11 +156,11 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(206, 206, 206)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(206, 206, 206))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,37 +180,67 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        jCheBoDesayuno.setText("Desayuno");
+
+        jCheBoAlmuerzo.setText("Almuerzo");
+
+        jCheBoMerienda.setText("Merienda");
+
+        jCheBoCena.setText("Cena");
+
+        jCheBoSnack.setText("Snack");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(jComBoOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addGap(5, 5, 5)
                 .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jComBoBuscarPorCalorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jButBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(6, 6, 6))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jCheBoDesayuno)
+                .addGap(43, 43, 43)
+                .addComponent(jCheBoAlmuerzo)
+                .addGap(43, 43, 43)
+                .addComponent(jCheBoMerienda)
+                .addGap(43, 43, 43)
+                .addComponent(jCheBoCena)
+                .addGap(43, 43, 43)
+                .addComponent(jCheBoSnack)
+                .addGap(38, 38, 38))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComBoBuscarPorCalorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComBoOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButBuscar)
+                            .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComBoBuscarPorCalorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComBoOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButBuscar)
-                    .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(9, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(jCheBoDesayuno)
+                    .addComponent(jCheBoAlmuerzo)
+                    .addComponent(jCheBoMerienda)
+                    .addComponent(jCheBoCena)
+                    .addComponent(jCheBoSnack))
+                .addGap(6, 6, 6))
         );
 
         jPanel8.setBackground(new java.awt.Color(102, 102, 102));
@@ -227,7 +284,7 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -237,13 +294,12 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -255,7 +311,7 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jButSalirActionPerformed
 
-    private void jButDietaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButDietaActionPerformed
+    private void jButAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButAgregarActionPerformed
         // TODO add your handling code here:
         
         if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 4){
@@ -271,13 +327,42 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
             
             conComiV.toFront();
         }
-    }//GEN-LAST:event_jButDietaActionPerformed
+    }//GEN-LAST:event_jButAgregarActionPerformed
+
+    private void jButEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButEditarActionPerformed
+        // TODO add your handling code here:
+        
+        if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 4){
+            EditarDietaComidasView ediDieComiV = new EditarDietaComidasView();
+            ediDieComiV.setVisible(true);
+            
+            int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - ediDieComiV.getWidth()) / 2;
+            int y = (MenuPrincipalView.jDesPaEscritorio.getHeight() - ediDieComiV.getHeight()) / 2;
+        
+            ediDieComiV.setLocation(x, y);
+            
+            MenuPrincipalView.jDesPaEscritorio.add(ediDieComiV);
+            
+            ediDieComiV.toFront();
+        }
+    }//GEN-LAST:event_jButEditarActionPerformed
+
+    private void jButEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButAgregar;
     private javax.swing.JButton jButBuscar;
-    private javax.swing.JButton jButDieta;
+    private javax.swing.JButton jButEditar;
+    private javax.swing.JButton jButEliminar;
     private javax.swing.JButton jButSalir;
+    private javax.swing.JCheckBox jCheBoAlmuerzo;
+    private javax.swing.JCheckBox jCheBoCena;
+    private javax.swing.JCheckBox jCheBoDesayuno;
+    private javax.swing.JCheckBox jCheBoMerienda;
+    private javax.swing.JCheckBox jCheBoSnack;
     private javax.swing.JComboBox<String> jComBoBuscarPorCalorias;
     private javax.swing.JComboBox<String> jComBoOrdenarPor;
     private javax.swing.JLabel jLabel1;
