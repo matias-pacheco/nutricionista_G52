@@ -97,7 +97,7 @@ public class DietaData {
                 dieta = new Dieta();
                 dieta.setIdDieta(rs.getInt("idDieta"));
                 dieta.setNombre(rs.getString("nombre"));
-                dieta.setPaciente(pacData.buscarPaciente(rs.getInt("idPaciente")));
+                dieta.setPaciente(pacData.buscarPacientePorId(rs.getInt("idPaciente")));
                 dieta.setFechaInicial(rs.getDate("fechaInicial").toLocalDate());
                 dieta.setPesoInicial(rs.getDouble("pesoInicial"));
                 dieta.setFechaFinal(rs.getDate("fechaFinal").toLocalDate());
@@ -139,7 +139,7 @@ public class DietaData {
                 dieta = new Dieta();
                 dieta.setIdDieta(rs.getInt("idDieta"));
                 dieta.setNombre(rs.getString("nombre"));
-                dieta.setPaciente(pacData.buscarPaciente(rs.getInt("idPaciente")));
+                dieta.setPaciente(pacData.buscarPacientePorId(rs.getInt("idPaciente")));
                 dieta.setFechaInicial(rs.getDate("fechaInicial").toLocalDate());
                 dieta.setPesoInicial(rs.getDouble("pesoInicial"));
                 dieta.setFechaFinal(rs.getDate("fechaFinal").toLocalDate());
@@ -182,7 +182,7 @@ public class DietaData {
                 dieta = new Dieta();
                 dieta.setIdDieta(rs.getInt("idDieta"));
                 dieta.setNombre(rs.getString("nombre"));
-                dieta.setPaciente(pacData.buscarPaciente(rs.getInt("idPaciente")));
+                dieta.setPaciente(pacData.buscarPacientePorId(rs.getInt("idPaciente")));
                 dieta.setFechaInicial(rs.getDate("fechaInicial").toLocalDate());
                 dieta.setPesoInicial(rs.getDouble("pesoInicial"));
                 dieta.setFechaFinal(rs.getDate("fechaFinal").toLocalDate());
@@ -265,7 +265,7 @@ public class DietaData {
                 Dieta dieta = new Dieta();
                 dieta.setIdDieta(rs.getInt("idDieta"));
                 dieta.setNombre(rs.getString("dieta.nombre"));
-                dieta.setPaciente(pacData.buscarPaciente(rs.getInt("dieta.idPaciente")));
+                dieta.setPaciente(pacData.buscarPacientePorId(rs.getInt("dieta.idPaciente")));
                 dieta.setFechaInicial(rs.getDate("fechaInicial").toLocalDate());
                 dieta.setPesoInicial(rs.getDouble("pesoInicial"));
                 dieta.setFechaFinal(rs.getDate("fechaFinal").toLocalDate());
@@ -301,7 +301,7 @@ public class DietaData {
             rs = ps.executeQuery();
             
             while(rs.next()){
-                Paciente paciente = pacData.buscarPaciente(rs.getInt("dieta.idPaciente"));
+                Paciente paciente = pacData.buscarPacientePorId(rs.getInt("dieta.idPaciente"));
                 
                 Dieta dieta = new Dieta();
                 dieta.setIdDieta(rs.getInt("idDieta"));
@@ -340,7 +340,7 @@ public class DietaData {
             rs = ps.executeQuery();
             
             while(rs.next()){
-                Paciente paciente = pacData.buscarPaciente(rs.getInt("idPaciente"));
+                Paciente paciente = pacData.buscarPacientePorId(rs.getInt("idPaciente"));
                 
                 Dieta dieta = new Dieta();
                 dieta.setIdDieta(rs.getInt("idDieta"));
@@ -396,7 +396,7 @@ public class DietaData {
                 Dieta dieta = new Dieta();
                 dieta.setIdDieta(rs.getInt("idDieta"));
                 dieta.setNombre(rs.getString("dieta.nombre"));
-                dieta.setPaciente(pacData.buscarPaciente(rs.getInt("dieta.idPaciente")));
+                dieta.setPaciente(pacData.buscarPacientePorId(rs.getInt("dieta.idPaciente")));
                 dieta.setFechaInicial(rs.getDate("fechaInicial").toLocalDate());
                 dieta.setPesoInicial(rs.getDouble("pesoInicial"));
                 dieta.setFechaFinal(rs.getDate("fechaFinal").toLocalDate());
@@ -404,7 +404,7 @@ public class DietaData {
                 
                 Historial_Peso historialPeso = new Historial_Peso();
                 historialPeso.setIdHistorialPeso(rs.getInt("idHistorialPeso"));
-                historialPeso.setPaciente(pacData.buscarPaciente(rs.getInt("historial_peso.idPaciente")));
+                historialPeso.setPaciente(pacData.buscarPacientePorId(rs.getInt("historial_peso.idPaciente")));
                 historialPeso.setFecha(rs.getDate("fecha").toLocalDate());
                 historialPeso.setPeso(rs.getDouble("peso"));
                 

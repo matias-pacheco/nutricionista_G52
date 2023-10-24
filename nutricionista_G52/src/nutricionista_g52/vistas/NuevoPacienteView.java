@@ -5,17 +5,87 @@
  */
 package nutricionista_g52.vistas;
 
+import javax.swing.JOptionPane;
+import nutricionista_g52.accesoADatos.PacienteData;
+import nutricionista_g52.entidades.Paciente;
+import nutricionista_g52.vistas.excepciones.CampoVacioException;
+import nutricionista_g52.vistas.excepciones.RangoNumericoException;
+import nutricionista_g52.vistas.excepciones.TipoDeDatoException;
+
 /**
  *
  * @author Matías Pacheco
  */
 public class NuevoPacienteView extends javax.swing.JInternalFrame {
+    private PacienteData pacData;
 
     /**
      * Creates new form ComidasView
      */
     public NuevoPacienteView() {
         initComponents();
+        this.pacData = new PacienteData();
+    }
+    
+//---------- Por defecto ---------- //Dejar para ultimo momento
+//    private void textoEjemploPorDefecto(){
+//        jTexFiDni.setText("12345678");
+//    }
+    
+//----------  ----------
+    private void setearTextoEnCampoNro(int opcion, String texto){
+        switch(opcion){
+            case 1:{ jTexFiDni.setText(texto); break; }
+            case 2:{ jTexFiApellido.setText(texto); break; }
+            case 3:{ jTexFiNombre.setText(texto); break; }
+            case 4:{ jTexFiDomicilio.setText(texto); break; }
+            case 5:{ jTexFiTelefono.setText(texto); break; }
+            case 6:{
+                jTexFiDni.setText(texto);
+                jTexFiApellido.setText(texto);
+                jTexFiNombre.setText(texto);
+                jTexFiDomicilio.setText(texto);
+                jTexFiTelefono.setText(texto);
+                break;
+            }
+        }
+    }
+    
+    private void setearTextoEnEtiquetaNro(int opcion, String texto){
+        switch(opcion){
+            case 1:{ jLabJTFDni.setText(texto); break;}
+            case 2:{ jLabJTFApellido.setText(texto); break;}
+            case 3:{ jLabJTFNombre.setText(texto); break;}
+            case 4:{ jLabJTFDomicilio.setText(texto); break;}
+            case 5:{ jLabJTFTelefono.setText(texto); break;}
+        }
+    }
+    
+//---------- Excepciones ----------
+    private void excepcionCampoVacio(String dato) throws CampoVacioException {
+        if(dato.isEmpty()){
+            throw new CampoVacioException("Campo/s vacio");
+        }
+    }
+    
+    private void excepcionRangoNumerico(long num, long rangoMenor, long rangoMayor) throws RangoNumericoException {
+        if(num < rangoMenor || num > rangoMayor){
+            throw new RangoNumericoException("Solo se permiten valores entre \n"+rangoMenor+" "
+                    + "y "+rangoMayor+"");
+        }
+    }
+    
+    private void excepcionRangoNumerico(int num, int rangoMenor, int rangoMayor) throws RangoNumericoException {
+        if(num < rangoMenor || num > rangoMayor){
+            throw new RangoNumericoException("Solo se permiten valores entre \n"+rangoMenor+" "
+                    + "y "+rangoMayor+"");
+        }
+    }
+    
+    private void excepcionTipoDeDato(String dato, String expresionRegular) throws TipoDeDatoException {
+        if(!dato.matches(expresionRegular)){
+            throw new TipoDeDatoException("Tipo de dato u orden de dato invalido. Ingrese unicamente ");
+        }
     }
 
     /**
@@ -95,6 +165,36 @@ public class NuevoPacienteView extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel6.setText("Teléfono");
 
+        jTexFiDni.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiDniKeyReleased(evt);
+            }
+        });
+
+        jTexFiApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiApellidoKeyReleased(evt);
+            }
+        });
+
+        jTexFiNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiNombreKeyReleased(evt);
+            }
+        });
+
+        jTexFiDomicilio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiDomicilioKeyReleased(evt);
+            }
+        });
+
+        jTexFiTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiTelefonoKeyReleased(evt);
+            }
+        });
+
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 0, 0));
         jLabel10.setText("*");
@@ -143,13 +243,14 @@ public class NuevoPacienteView extends javax.swing.JInternalFrame {
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabJTFApellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabJTFNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabJTFDni, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                             .addComponent(jTexFiDni, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(4, 4, 4)
-                                            .addComponent(jLabel10))
+                                            .addComponent(jLabel10)
+                                            .addGap(102, 102, 102))
                                         .addComponent(jTexFiApellido)
-                                        .addComponent(jTexFiNombre)))
+                                        .addComponent(jTexFiNombre)
+                                        .addComponent(jLabJTFDni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel5)
@@ -158,15 +259,12 @@ public class NuevoPacienteView extends javax.swing.JInternalFrame {
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jTexFiDomicilio)
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabJTFDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                        .addComponent(jLabJTFTelefono, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jTexFiTelefono, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
-                                                    .addGap(4, 4, 4)
-                                                    .addComponent(jLabel14)))
-                                            .addGap(16, 16, 16))))))
+                                            .addComponent(jTexFiTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(4, 4, 4)
+                                            .addComponent(jLabel14)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jLabJTFTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabJTFDomicilio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addGap(4, 4, 4)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
@@ -215,6 +313,11 @@ public class NuevoPacienteView extends javax.swing.JInternalFrame {
         );
 
         jButGuardar.setText("Guardar");
+        jButGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButGuardarActionPerformed(evt);
+            }
+        });
 
         jButCancelar.setText("Cancelar");
         jButCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -224,6 +327,11 @@ public class NuevoPacienteView extends javax.swing.JInternalFrame {
         });
 
         jButLimpiar.setText("Limpiar");
+        jButLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -311,6 +419,135 @@ public class NuevoPacienteView extends javax.swing.JInternalFrame {
         
         this.dispose();
     }//GEN-LAST:event_jButCancelarActionPerformed
+
+    private void jButGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButGuardarActionPerformed
+        // TODO add your handling code here:
+        
+        String ingSolo = "letras";
+        try{
+            String dniCad = jTexFiDni.getText(); excepcionCampoVacio(dniCad);
+            int dni = (int) Long.parseLong(dniCad); excepcionRangoNumerico(dni, 1000000, 99999999);
+            String apellido = jTexFiApellido.getText(); excepcionCampoVacio(apellido); excepcionTipoDeDato(apellido, "^[a-zA-ZÀ-ÖØ-öø-ÿ ]*$");
+            String nombre = jTexFiNombre.getText(); excepcionCampoVacio(nombre); excepcionTipoDeDato(nombre, "^[a-zA-ZÀ-ÖØ-öø-ÿ ]*$");
+            ingSolo+= " y números";
+            String domicilio = jTexFiDomicilio.getText(); excepcionCampoVacio(domicilio); excepcionTipoDeDato(domicilio, 
+                    "^([a-zA-ZÀ-ÖØ-öø-ÿ]+ ?)+ \\d+$");
+            ingSolo = "números";
+            String telefono = jTexFiTelefono.getText(); excepcionCampoVacio(telefono); excepcionTipoDeDato(telefono, "^[0-9\\s]*$");
+            long telefonoNro = Long.parseLong(telefono.replace(" ", "")); excepcionRangoNumerico(telefonoNro, 1000000000L, 9999999999L);
+            boolean estado = true;
+
+            Paciente paciente = new Paciente(dni, apellido, nombre, domicilio, telefono, estado);
+
+            if(pacData.guardarPaciente(paciente)){
+                setearTextoEnCampoNro(6, "");
+                
+                this.dispose();
+            }
+        } catch(CampoVacioException cve){
+            JOptionPane.showMessageDialog(null, cve.getMessage()+". Llene todos los campos indicados", "  Mensaje", 1);
+        } catch(NumberFormatException nfe){
+            JOptionPane.showMessageDialog(null, "Ingrese unicamente el número de documento sin puntuaciones", 
+                    "  Mensaje", 1);
+        } catch(RangoNumericoException rne){
+            JOptionPane.showMessageDialog(null, "Número fuera de rango. "+rne.getMessage(), "  Mensaje", 1);
+        } catch(TipoDeDatoException tdde){
+            JOptionPane.showMessageDialog(null, tdde.getMessage()+ingSolo+".\nY respete el orden de entrada de los mismos",
+                    "  Mensaje", 1);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButGuardarActionPerformed
+
+    private void jButLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButLimpiarActionPerformed
+        // TODO add your handling code here:
+        
+        setearTextoEnCampoNro(6, "");
+    }//GEN-LAST:event_jButLimpiarActionPerformed
+
+    private void jTexFiDniKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiDniKeyReleased
+        // TODO add your handling code here:
+        setearTextoEnEtiquetaNro(1, "");
+        
+        try{
+            String dniCad = jTexFiDni.getText(); excepcionCampoVacio(dniCad);
+            int dni = (int) Long.parseLong(dniCad); excepcionRangoNumerico(dni, 1000000, 99999999);
+            
+            if(pacData.buscarPacientePorDni(dni)){
+                setearTextoEnEtiquetaNro(1, "el número está en uso");
+            }
+        } catch(CampoVacioException cve){
+            //Capturo está excepción para evitar que intente parsear una cadena vacia
+        } catch(NumberFormatException nfe){
+            setearTextoEnEtiquetaNro(1, "solo números");
+        } catch(RangoNumericoException rne){
+            setearTextoEnEtiquetaNro(1, "desde 1.000.000 hasta 99.999.999");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jTexFiDniKeyReleased
+
+    private void jTexFiApellidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiApellidoKeyReleased
+        // TODO add your handling code here:
+        setearTextoEnEtiquetaNro(2, "");
+        
+        try{
+            String apellido = jTexFiApellido.getText(); excepcionTipoDeDato(apellido, "^[a-zA-ZÀ-ÖØ-öø-ÿ ]*$");
+        } catch(TipoDeDatoException tdde){
+            setearTextoEnEtiquetaNro(2, "solo letras");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jTexFiApellidoKeyReleased
+
+    private void jTexFiNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiNombreKeyReleased
+        // TODO add your handling code here:
+        setearTextoEnEtiquetaNro(3, "");
+        
+        try{
+            String nombre = jTexFiNombre.getText(); excepcionTipoDeDato(nombre, "^[a-zA-ZÀ-ÖØ-öø-ÿ ]*$");
+        } catch(TipoDeDatoException tdde){
+            setearTextoEnEtiquetaNro(3, "solo letras");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jTexFiNombreKeyReleased
+
+    private void jTexFiDomicilioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiDomicilioKeyReleased
+        // TODO add your handling code here:
+        setearTextoEnEtiquetaNro(4, "");
+        
+        try{
+            String domicilio = jTexFiDomicilio.getText(); excepcionCampoVacio(domicilio); excepcionTipoDeDato(domicilio, 
+                    "^([a-zA-ZÀ-ÖØ-öø-ÿ]+ ?)+ \\d+$");
+        } catch(CampoVacioException cve){
+            //Capturo está excepción para evitar mostrar el mensaje en el caso de que el usuario borre lo que ingreso
+        } catch(TipoDeDatoException tdde){
+            setearTextoEnEtiquetaNro(4, "calle número (ej: calle 123)");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jTexFiDomicilioKeyReleased
+
+    private void jTexFiTelefonoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiTelefonoKeyReleased
+        // TODO add your handling code here:
+        setearTextoEnEtiquetaNro(5, "");
+        
+        try{   
+            String telefono = jTexFiTelefono.getText(); excepcionCampoVacio(telefono); excepcionTipoDeDato(telefono, "^[0-9\\s]*$");
+            long telefonoNro = Long.parseLong(telefono.replace(" ", "")); excepcionRangoNumerico(telefonoNro, 1000000000L, 9999999999L);
+        
+            if(pacData.buscarPacientePorTelefono(telefono)){
+                setearTextoEnEtiquetaNro(5, "el número está en uso");
+            }
+        } catch(CampoVacioException cve){
+            //Capturo está excepción para evitar que intente parsear una cadena vacia
+        } catch(TipoDeDatoException tdde){
+            setearTextoEnEtiquetaNro(5, "solo números");
+        } catch(RangoNumericoException rne){
+            setearTextoEnEtiquetaNro(5, "desde 100 000 0000 hasta 999 9999 9999");
+        }
+    }//GEN-LAST:event_jTexFiTelefonoKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -44,6 +44,7 @@ public class EditarPacienteView extends javax.swing.JInternalFrame {
         jLabJTFNombre = new javax.swing.JLabel();
         jLabJTFDomicilio = new javax.swing.JLabel();
         jLabJTFTelefono = new javax.swing.JLabel();
+        jButGuardar1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButGuardar = new javax.swing.JButton();
         jButCancelar = new javax.swing.JButton();
@@ -96,6 +97,8 @@ public class EditarPacienteView extends javax.swing.JInternalFrame {
 
         jLabJTFTelefono.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
 
+        jButGuardar1.setText("Habilitar");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -115,10 +118,13 @@ public class EditarPacienteView extends javax.swing.JInternalFrame {
                                 .addComponent(jTexFiApellido)
                                 .addComponent(jTexFiNombre)
                                 .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabJTFDni, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTexFiDni, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(111, 111, 111))))
+                                    .addComponent(jLabJTFDni, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(111, 111, 111))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jTexFiDni, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 0, Short.MAX_VALUE))))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel5)
@@ -138,10 +144,11 @@ public class EditarPacienteView extends javax.swing.JInternalFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTexFiDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTexFiDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButGuardar1))
                 .addGap(0, 0, 0)
                 .addComponent(jLabJTFDni, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
@@ -234,6 +241,7 @@ public class EditarPacienteView extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButCancelar;
     private javax.swing.JButton jButGuardar;
+    private javax.swing.JButton jButGuardar1;
     private javax.swing.JLabel jLabJTFApellido;
     private javax.swing.JLabel jLabJTFDni;
     private javax.swing.JLabel jLabJTFDomicilio;

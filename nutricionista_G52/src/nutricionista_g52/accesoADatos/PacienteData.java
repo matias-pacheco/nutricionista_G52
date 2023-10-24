@@ -25,9 +25,49 @@ public class PacienteData {
         this.conex = Conexion.conectar();
     }
     
-    public void guardarPaciente(Paciente paciente){
+//    public void guardarPaciente(Paciente paciente){
+//        String sql = "INSERT INTO paciente (dni, apellido, nombre, domicilio, telefono, estado) "
+//                + "VALUES(?, ?, ?, ?, ?, ?);";
+//        PreparedStatement ps = null;
+//        ResultSet rs = null;
+//        
+//        try{
+//            ps = conex.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+//            ps.setInt(1, paciente.getDni());
+//            ps.setString(2, paciente.getApellido());
+//            ps.setString(3, paciente.getNombre());
+//            ps.setString(4, paciente.getDomicilio());
+//            ps.setString(5, paciente.getTelefono());
+//            ps.setBoolean(6, paciente.getEstado());
+//            ps.executeUpdate();
+//            
+//            rs = ps.getGeneratedKeys();
+//            
+//            if(rs.next()){
+//                paciente.setIdPaciente(rs.getInt(1));
+//                
+//                JOptionPane.showMessageDialog(null, "Paciente guardado", "  Mensaje", 1);
+//            } else {
+//                JOptionPane.showMessageDialog(null, "No se pudo guardar paciente", "  Mensaje", 1);
+//            }
+//        } catch(SQLException sqle){
+//            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+//        } catch(HeadlessException he){
+//            System.err.println(he.getMessage());
+//        } catch(Exception e){
+//            e.printStackTrace();
+//        } finally {
+//            cerrarPreparedStatement(ps);
+//            cerrarResultSet(rs);
+//        }
+//    }
+    public boolean guardarPaciente(Paciente paciente){
         String sql = "INSERT INTO paciente (dni, apellido, nombre, domicilio, telefono, estado) "
-                + "VALUES(?, ?, ?, ?, ?, ?);";
+                + "SELECT ?, ?, ?, ?, ?, ? WHERE NOT EXISTS("
+                    + "SELECT dni, telefono FROM paciente WHERE dni = ? OR REPLACE(telefono, ' ', '') IN("
+                        + "SELECT REPLACE(?, ' ', '') FROM paciente"
+                    + ")"
+                + ")";
         PreparedStatement ps = null;
         ResultSet rs = null;
         
@@ -39,6 +79,9 @@ public class PacienteData {
             ps.setString(4, paciente.getDomicilio());
             ps.setString(5, paciente.getTelefono());
             ps.setBoolean(6, paciente.getEstado());
+            
+            ps.setInt(7, paciente.getDni());
+            ps.setString(8, paciente.getTelefono());
             ps.executeUpdate();
             
             rs = ps.getGeneratedKeys();
@@ -47,8 +90,11 @@ public class PacienteData {
                 paciente.setIdPaciente(rs.getInt(1));
                 
                 JOptionPane.showMessageDialog(null, "Paciente guardado", "  Mensaje", 1);
+                
+                return true;
             } else {
-                JOptionPane.showMessageDialog(null, "No se pudo guardar paciente", "  Mensaje", 1);
+                JOptionPane.showMessageDialog(null, "No se pudo guardar paciente. Revise que el número de documento"
+                        + "\no de teléfono sea el correcto", "  Mensaje", 1);
             }
         } catch(SQLException sqle){
             System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
@@ -60,9 +106,11 @@ public class PacienteData {
             cerrarPreparedStatement(ps);
             cerrarResultSet(rs);
         }
+        
+        return false;
     }
     
-    public Paciente buscarPaciente(int id){
+    public Paciente buscarPacientePorId(int id){
         String sql = "SELECT * FROM paciente WHERE idPaciente = ? AND estado = 1;";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -136,6 +184,60 @@ public class PacienteData {
         }
         
         return paciente;
+    }
+    
+    public boolean buscarPacientePorDni(int dni){
+        String sql = "SELECT 1 FROM paciente WHERE dni = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, dni);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return true;
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return false;
+    }
+    
+    public boolean buscarPacientePorTelefono(String telefono){
+        String sql = "SELECT 1 FROM paciente WHERE REPLACE(telefono, ' ', '') IN("
+                    + "SELECT REPLACE(?, ' ', '') FROM paciente"
+                + ")";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setString(1, telefono);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return true;
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return false;
     }
     
     public void modificarPaciente(Paciente paciente){

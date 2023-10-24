@@ -81,7 +81,7 @@ public class Historial_PesoData {
             if(rs.next()){
                 hisPeso = new Historial_Peso();
                 hisPeso.setIdHistorialPeso(rs.getInt("idHistorialPeso"));
-                hisPeso.setPaciente(pacData.buscarPaciente(rs.getInt("idPaciente")));
+                hisPeso.setPaciente(pacData.buscarPacientePorId(rs.getInt("idPaciente")));
                 hisPeso.setFecha(rs.getDate("fecha").toLocalDate());
                 hisPeso.setPeso(rs.getDouble("peso"));
             } else {
@@ -147,7 +147,7 @@ public class Historial_PesoData {
             while(rs.next()){
                 Historial_Peso historialPeso = new Historial_Peso();
                 historialPeso.setIdHistorialPeso(rs.getInt("idHistorialPeso"));
-                historialPeso.setPaciente(pacData.buscarPaciente(rs.getInt("idPaciente")));
+                historialPeso.setPaciente(pacData.buscarPacientePorId(rs.getInt("idPaciente")));
                 historialPeso.setFecha(rs.getDate("fecha").toLocalDate());
                 historialPeso.setPeso(rs.getDouble("peso"));
                 

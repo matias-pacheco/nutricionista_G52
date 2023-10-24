@@ -103,11 +103,14 @@
                                   <Component id="jTexFiApellido" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jTexFiNombre" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabJTFDni" min="-2" pref="140" max="-2" attributes="0"/>
-                                          <Component id="jTexFiDni" min="-2" pref="140" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="jLabJTFDni" min="-2" pref="140" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="111" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jTexFiDni" min="-2" pref="140" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jButGuardar1" min="-2" pref="81" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -140,10 +143,11 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jTexFiDni" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButGuardar1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="jLabJTFDni" min="-2" pref="12" max="-2" attributes="0"/>
@@ -263,6 +267,11 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="10" style="1"/>
             </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButGuardar1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Habilitar"/>
           </Properties>
         </Component>
       </SubComponents>
