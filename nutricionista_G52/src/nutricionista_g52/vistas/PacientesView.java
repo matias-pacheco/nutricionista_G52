@@ -5,27 +5,163 @@
  */
 package nutricionista_g52.vistas;
 
+import java.awt.HeadlessException;
+import java.util.Collections;
+import nutricionista_g52.entidades.Paciente;
+import java.util.List;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import nutricionista_g52.accesoADatos.PacienteData;
 import nutricionista_g52.vistas.EditarPacienteView;
 import nutricionista_g52.vistas.MenuPrincipalView;
+import static nutricionista_g52.vistas.MenuPrincipalView.jDesPaEscritorio;
 import nutricionista_g52.vistas.NuevoPacienteView;
 import nutricionista_g52.vistas.PesoView;
+import nutricionista_g52.vistas.comparator.Comparadores;
+import nutricionista_g52.vistas.excepciones.CampoVacioException;
+import nutricionista_g52.vistas.excepciones.RangoNumericoException;
+import nutricionista_g52.vistas.excepciones.TipoDeDatoException;
 
 /**
  *
  * @author Matías Pacheco
  */
 public class PacientesView extends javax.swing.JInternalFrame {
+    private DefaultTableModel modeloTab;
+    private PacienteData pacData;
 
     /**
      * Creates new form PacientesView
      */
     public PacientesView() {
         initComponents();
+        this.modeloTab = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int fila, int columna){
+                return false;
+            }
+        };
+        this.pacData = new PacienteData();
+        porDefecto();
+    }
+    
+//---------- Por defecto ----------
+    private void porDefecto(){
+        agregarColumnasALaTabla();
+        listarJComBoBuscar();
+        deshabilitarElReordenamientoDeColumnas();
+        habilitarComponentes(false);
+    }
+    
+    private void listarJComBoBuscar(){
+        jComBoBuscar.addItem("POR APELLIDO");
+        jComBoBuscar.addItem("POR DNI");
+    }
+    
+    private void agregarColumnasALaTabla(){
+        modeloTab.addColumn("DNI");
+        modeloTab.addColumn("APELLIDO");
+        modeloTab.addColumn("NOMBRE");
+        modeloTab.addColumn("DOMICILIO");
+        modeloTab.addColumn("TELÉFONO");
+        
+        jTabPacientes.setModel(modeloTab);
+    }
+    
+    private void deshabilitarElReordenamientoDeColumnas(){
+        jTabPacientes.getTableHeader().setReorderingAllowed(false);
+    }
+    
+    private void habilitarComponentes(boolean habilitado){
+        jButBuscar.setEnabled(habilitado);
+    }
+    
+//---------- Métodos Reune Métodos (método atajo)----------  
+    private void llenarPorDefecto(){
+        vaciarFilasDeLaTabla();
+        llenarFilasDeLaTabla(pacData.listarPacientes());
+    }
+    
+    private void llenarPersonalizado(List<Paciente> registro){
+        vaciarFilasDeLaTabla();
+        llenarFilasDeLaTabla(registro);
+    }
+    
+//---------- Listar, Ordenar, Vaciar ----------
+    private void llenarFilasDeLaTabla(List<Paciente> registro){
+        for(Paciente paciente : ordenarFilasDeLaTabla(registro)){
+            modeloTab.addRow(new Object[] {paciente.getDni(), paciente.getApellido(), paciente.getNombre(), paciente.getDomicilio(),
+                paciente.getTelefono()});
+        }
+    }
+    
+    private void llenarFilaDeLaTabla(Paciente paciente){
+        try{
+            modeloTab.addRow(new Object[] {paciente.getDni(), paciente.getApellido(), paciente.getNombre(), paciente.getDomicilio(),
+                paciente.getTelefono()});
+        } catch(NullPointerException npe){
+            //Captura la excepción unicamente para que el programa responda adecuadamente
+        }
+    }
+    
+    private List<Paciente> ordenarFilasDeLaTabla(List<Paciente> registro){
+        if(jComBoBuscar.getSelectedIndex() == 0){
+            Collections.sort(registro, Comparadores.ordenarPorApellido);
+        } else {
+            Collections.sort(registro, Comparadores.ordenarPorDni);
+        }
+        
+        return registro;
+    }
+    
+    private void vaciarFilasDeLaTabla(){
+        for(int i = 0; i < modeloTab.getRowCount(); i++){
+            modeloTab.removeRow(i);
+            i--;
+        }
+    }
+    
+    private void vaciarJTexFiBuscar(){
+        jTexFiBuscar.setText("");
+    }
+    
+    private Paciente pacienteSeleccionadoEnTabla(){
+        int dni = (int) jTabPacientes.getValueAt(jTabPacientes.getSelectedRow(), 0);
+//        System.out.println("dni: "+dni);
+        Paciente paciente = pacData.buscarpacientePorDni(dni);
+        
+        return paciente;
+    }
+    
+    private int obtenerDniDeFila(){
+        int dni = (int) jTabPacientes.getValueAt(jTabPacientes.getSelectedRow(), 0);
+        
+        return dni;
     }
 
+//---------- Excepciones ----------
+    private void excepcionCampoVacio(String dato) throws CampoVacioException {
+        if(dato.isEmpty()){
+            throw new CampoVacioException("Campo/s vacio");
+        }
+    }
+    
+    private void excepcionRangoNumerico(int num, int rangoMenor, int rangoMayor) throws RangoNumericoException {
+        if(num < rangoMenor || num > rangoMayor){
+            throw new RangoNumericoException("Solo se permiten valores entre 1.000.000 y 99.999.999");
+        }
+    }
+    
+    private void excepcionTipoDeDato(String dato) throws TipoDeDatoException {
+        if(!dato.matches("^[a-zA-ZÀ-ÖØ-öø-ÿ ]*$")){
+            throw new TipoDeDatoException("Tipo de dato invalido. Ingrese unicamente letras");
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this
      * method is always regenerated by the Form Editor.
@@ -40,8 +176,8 @@ public class PacientesView extends javax.swing.JInternalFrame {
         jTabPacientes = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jButEditar = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        jButEliminar = new javax.swing.JButton();
+        jButSalir = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -50,6 +186,7 @@ public class PacientesView extends javax.swing.JInternalFrame {
         jButBuscar = new javax.swing.JButton();
         jComBoBuscar = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabJTFBuscar = new javax.swing.JLabel();
 
         jTabPacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -85,12 +222,17 @@ public class PacientesView extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton5.setText("Eliminar");
-
-        jButton6.setText("Salir");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        jButEliminar.setText("Eliminar");
+        jButEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                jButEliminarActionPerformed(evt);
+            }
+        });
+
+        jButSalir.setText("Salir");
+        jButSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButSalirActionPerformed(evt);
             }
         });
 
@@ -102,9 +244,9 @@ public class PacientesView extends javax.swing.JInternalFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jButEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5)
+                .addComponent(jButEliminar)
                 .addGap(360, 360, 360)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
         );
         jPanel2Layout.setVerticalGroup(
@@ -113,8 +255,8 @@ public class PacientesView extends javax.swing.JInternalFrame {
                 .addGap(6, 6, 6)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButEditar)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
+                    .addComponent(jButEliminar)
+                    .addComponent(jButSalir))
                 .addGap(12, 12, 12))
         );
 
@@ -148,11 +290,28 @@ public class PacientesView extends javax.swing.JInternalFrame {
             }
         });
 
-        jButBuscar.setText("Buscar");
+        jTexFiBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiBuscarKeyReleased(evt);
+            }
+        });
 
-        jComBoBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "POR APELLIDO", "POR DNI" }));
+        jButBuscar.setText("Buscar");
+        jButBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButBuscarActionPerformed(evt);
+            }
+        });
+
+        jComBoBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComBoBuscarActionPerformed(evt);
+            }
+        });
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabJTFBuscar.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -161,12 +320,15 @@ public class PacientesView extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jButNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(52, 52, 52)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComBoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComBoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabJTFBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
@@ -174,16 +336,20 @@ public class PacientesView extends javax.swing.JInternalFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButBuscar)
-                    .addComponent(jButNuevo)
-                    .addComponent(jComBoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButBuscar)
+                            .addComponent(jButNuevo)
+                            .addComponent(jComBoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabJTFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -191,24 +357,20 @@ public class PacientesView extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 4, Short.MAX_VALUE))
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -218,7 +380,16 @@ public class PacientesView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         
         if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 2){
-            EditarPacienteView ediPacV = new EditarPacienteView();
+            if(jTabPacientes.getSelectedRow() == -1){
+                try{
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar un paciente de la tabla", "  Mensaje", 1);
+                    return;
+                } catch(HeadlessException he){
+                    System.err.println(he.getMessage());
+                }
+            }
+            
+            EditarPacienteView ediPacV = new EditarPacienteView(pacienteSeleccionadoEnTabla());
             ediPacV.setVisible(true);
         
             int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - ediPacV.getWidth()) / 2;
@@ -254,20 +425,132 @@ public class PacientesView extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButNuevoActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void jButSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButSalirActionPerformed
         // TODO add your handling code here:
         
         this.dispose();
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_jButSalirActionPerformed
+
+    private void jComBoBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComBoBuscarActionPerformed
+        // TODO add your handling code here:
+        
+        vaciarJTexFiBuscar();
+        jLabJTFBuscar.setText("");
+        llenarPorDefecto();
+        
+//        try{
+//            String dato = jTexFiBuscar.getText(); excepcionCampoVacio(dato);
+//
+//            if(jComBoBuscar.getSelectedIndex() == 0){
+//                excepcionTipoDeDato(dato);
+//                
+//                jLabJTFBuscar.setText(title);
+//            } else {
+//                int dni = (int) Long.parseLong(dato);
+//                
+//                jLabJTFBuscar.setText("");
+//            }
+//        } catch(CampoVacioException cve){
+//            llenarPorDefecto();
+//        } catch(TipoDeDatoException tdde){
+//            jLabJTFBuscar.setText("");
+//            vaciarJTexFiBuscar();
+//            llenarPorDefecto();
+//        } catch(NumberFormatException nfe){
+//            jLabJTFBuscar.setText("");
+//            vaciarJTexFiBuscar();
+//            llenarPorDefecto();
+//        }
+    }//GEN-LAST:event_jComBoBuscarActionPerformed
+
+    private void jButBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButBuscarActionPerformed
+        // TODO add your handling code here:
+        
+//        try{
+//            String dato = jTexFiBuscar.getText(); excepcionCampoVacio(dato);
+//            
+//            if(jComBoBuscar.getSelectedIndex() == 0){
+//                excepcionTipoDeDato(dato);
+//                
+//                llenarPersonalizado(pacData.listarPacientesPorApellido(dato));
+//            } else {
+//                int dni = Integer.parseInt(dato); excepcionRangoNumerico(dni, 1000000, 99999999);
+//
+//                vaciarFilasDeLaTabla();
+//                llenarFilaDeLaTabla(pacData.buscarpacientePorDni(dni));
+//            }
+//        } catch(CampoVacioException cve){
+//            llenarPorDefecto();
+//        } catch(TipoDeDatoException tdde){
+//            JOptionPane.showMessageDialog(null, tdde.getMessage(), "  Mensaje", 1);
+//            vaciarJTexFiBuscar();
+//            llenarPorDefecto();
+//        } catch(NumberFormatException nfe){
+//            JOptionPane.showMessageDialog(null, "Ingrese unicamente números", "  Mensaje", 1);
+//            vaciarJTexFiBuscar();
+//            llenarPorDefecto();
+//        } catch(RangoNumericoException rne){
+//            JOptionPane.showMessageDialog(null, rne.getMessage(), "  Mensaje", 1);
+//        } catch(Exception e){
+//            e.printStackTrace();
+//        }
+    }//GEN-LAST:event_jButBuscarActionPerformed
+
+    private void jButEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButEliminarActionPerformed
+        // TODO add your handling code here:
+        
+        try{
+            if(jTabPacientes.getSelectedRow() != -1){
+                int opcion = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea eliminar este paciente?", "  Eliminar Paciente", 0);
+                
+                if(opcion == 0){
+                    pacData.borrarPacientePorDni(obtenerDniDeFila());
+                    llenarPorDefecto();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe seleccionar un paciente de la tabla", "  Mensaje", 1);
+            }
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
+        }
+    }//GEN-LAST:event_jButEliminarActionPerformed
+
+    private void jTexFiBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiBuscarKeyReleased
+        // TODO add your handling code here:
+        jLabJTFBuscar.setText("");
+        
+        try{
+            String dato = jTexFiBuscar.getText(); excepcionCampoVacio(dato);
+            
+            if(jComBoBuscar.getSelectedIndex() == 0){
+                excepcionTipoDeDato(dato);
+
+                llenarPersonalizado(pacData.listarPacientesPorApellido(dato+"%"));
+            } else {
+                int dniNro = (int) Long.parseLong(dato); excepcionRangoNumerico(dniNro, 1, 99999999);
+                
+                llenarPersonalizado(pacData.listarPacientesPorDni(dato+"%"));
+            }
+        } catch(CampoVacioException cve){
+            llenarPorDefecto();
+        } catch(TipoDeDatoException tdde){
+            jLabJTFBuscar.setText("solo letras");
+        } catch(NumberFormatException nfe){
+            jLabJTFBuscar.setText("solo números");
+        } catch(RangoNumericoException rne){
+            jLabJTFBuscar.setText("desde 1.000.000 hasta 99.999.999");
+        }
+    }//GEN-LAST:event_jTexFiBuscarKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButBuscar;
     private javax.swing.JButton jButEditar;
+    private javax.swing.JButton jButEliminar;
     private javax.swing.JButton jButNuevo;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButSalir;
     private javax.swing.JComboBox<String> jComBoBuscar;
+    private javax.swing.JLabel jLabJTFBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
