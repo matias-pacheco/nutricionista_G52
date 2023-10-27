@@ -126,6 +126,11 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenu4.setText("Salir");
 
         jMenItSalir.setText("Salir");
+        jMenItSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenItSalirActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenItSalir);
 
         jMenuBar1.add(jMenu4);
@@ -237,6 +242,11 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jDesPaEscritorio.add(newDieV);
         jDesPaEscritorio.moveToFront(newDieV);
     }//GEN-LAST:event_jMenItDietasNuevaActionPerformed
+
+    private void jMenItSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenItSalirActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jMenItSalirActionPerformed
 
     /**
      * @param args the command line arguments
