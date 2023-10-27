@@ -238,6 +238,10 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jDesPaEscritorio.moveToFront(newDieV);
     }//GEN-LAST:event_jMenItDietasNuevaActionPerformed
 
+    private void jMenItSalirActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    // TODO add your handling code here:
+        this.dispose();
+    }       
     /**
      * @param args the command line arguments
      */
