@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-10-2023 a las 23:08:28
+-- Tiempo de generación: 27-10-2023 a las 05:15:31
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -44,7 +44,10 @@ CREATE TABLE `comida` (
 INSERT INTO `comida` (`idComida`, `nombre`, `detalle`, `cantCalorias`, `estado`) VALUES
 (1, 'Pechuga', 'Al horno', 400, 1),
 (2, 'Ensalada Natural', 'Sin sal y aceite', 50, 1),
-(3, 'Carne con Papas', 'Hervido', 800, 1);
+(3, 'Carne con Papas', 'Hervido', 800, 1),
+(4, 'Pechuga de Pavo', 'Al horno', 123, 1),
+(5, 'Milanesa', 'Frita', 450, 1),
+(6, 'Pure de calabazas', 'Hervido con Jugo de pollo', 500, 1);
 
 -- --------------------------------------------------------
 
@@ -104,8 +107,8 @@ CREATE TABLE `dieta_comida` (
 INSERT INTO `dieta_comida` (`idDietaComida`, `idComida`, `idDieta`, `horario`, `porcion`) VALUES
 (1, 1, 1, 'ALMUERZO', 300),
 (2, 2, 60, 'DESAYUNO', 200),
-(3, 3, 60, 'ALMUERZO', 450),
-(4, 3, 62, 'ALMUERZO', 500);
+(4, 3, 62, 'ALMUERZO', 500),
+(7, 3, 60, 'ALMUERZO', 350);
 
 -- --------------------------------------------------------
 
@@ -158,9 +161,17 @@ CREATE TABLE `paciente` (
 
 INSERT INTO `paciente` (`idPaciente`, `dni`, `apellido`, `nombre`, `domicilio`, `telefono`, `estado`) VALUES
 (1, 20333444, 'Giraldo', 'Romualdo', 'Calle 321', '11 30032002', 1),
-(2, 40666777, 'Lang', 'Rodrigo', 'Calle Baja 321', '11 50054004', 1),
+(2, 40666777, 'Lang', 'Rodrigo', 'Calle Baja 321', '11 50054044', 1),
 (4, 70888999, 'Mujica', 'Sergio', 'Calle Pobre 123', '11 90092002', 1),
-(5, 12555777, 'Lata', 'Ezequiel', 'Calle Cien 123', '11 3456 3455', 1);
+(5, 12555777, 'Lata', 'Ezequiel', 'Calle Cien 123', '11 3456 3455', 0),
+(6, 20333555, 'Centurion', 'Ariel', 'Calle Brava 123', '11 99998888', 1),
+(7, 12345678, 'Romero', 'Sergio', 'Calle Central Diagonal 1234', '11 9999 8888', 1),
+(8, 87654321, 'Bucachi', 'Leopoldo', 'Callle Cuadrada 1234', '11 7777 6666', 1),
+(9, 33444555, 'Sosa', 'Abril', 'Calle Cerca 123', '11 9009 3003', 1),
+(10, 21333111, 'Paolo', 'Pablo', 'Calle Street Húgo 123', '11 3003 2017', 0),
+(11, 33444777, 'Macri', 'Javier', 'Libertador 1843', '11 3003 2004', 1),
+(12, 20444555, 'Sosá', 'Agustín', 'Calle 1234', '11 2222 3333', 1),
+(13, 22222222, 'Roma', 'Ricardo', 'Calle Rotulo 333', '11 2323 2323', 1);
 
 --
 -- Índices para tablas volcadas
@@ -211,7 +222,7 @@ ALTER TABLE `paciente`
 -- AUTO_INCREMENT de la tabla `comida`
 --
 ALTER TABLE `comida`
-  MODIFY `idComida` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idComida` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `dieta`
@@ -223,7 +234,7 @@ ALTER TABLE `dieta`
 -- AUTO_INCREMENT de la tabla `dieta_comida`
 --
 ALTER TABLE `dieta_comida`
-  MODIFY `idDietaComida` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idDietaComida` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_peso`
@@ -235,7 +246,7 @@ ALTER TABLE `historial_peso`
 -- AUTO_INCREMENT de la tabla `paciente`
 --
 ALTER TABLE `paciente`
-  MODIFY `idPaciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idPaciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas
