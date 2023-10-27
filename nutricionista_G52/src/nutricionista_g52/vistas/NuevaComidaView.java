@@ -5,17 +5,73 @@
  */
 package nutricionista_g52.vistas;
 
+import javax.swing.JOptionPane;
+import nutricionista_g52.accesoADatos.ComidaData;
+import nutricionista_g52.entidades.Comida;
+import nutricionista_g52.vistas.excepciones.CampoVacioException;
+import nutricionista_g52.vistas.excepciones.RangoNumericoException;
+import nutricionista_g52.vistas.excepciones.TipoDeDatoException;
+
 /**
  *
  * @author Matías Pacheco
  */
 public class NuevaComidaView extends javax.swing.JInternalFrame {
-
+    private ComidaData comiData;
     /**
      * Creates new form ComidasView
      */
     public NuevaComidaView() {
         initComponents();
+        this.comiData = new ComidaData();
+    }
+    
+//---------- Métodos Reune Métodos (método atajo)----------
+    private void setearTextoEnCampoNro(int opcion, String texto){
+        switch(opcion){
+            case 1:{ jTexFiNombre.setText(texto); break; } 
+            case 2:{ jTexFiDetalle.setText(texto); break; } 
+            case 3:{ jTexFiCalorias.setText(texto); break; } 
+            case 4:{
+                jTexFiNombre.setText(texto); 
+                jTexFiDetalle.setText(texto); 
+                jTexFiCalorias.setText(texto);
+                break;
+            } 
+        }
+    }
+    
+    private void setearTextoEnEtiquetaNro(int opcion, String texto){
+        switch(opcion){
+            case 1:{ jLabJTFNombre.setText(texto); break; }
+            case 2:{ jLabJTFDetalle.setText(texto); break; }
+            case 3:{ jLabJTFCalorias.setText(texto); break; }
+            case 4:{
+                jLabJTFNombre.setText(texto);
+                jLabJTFDetalle.setText(texto);
+                jLabJTFCalorias.setText(texto);
+                break;
+            }
+        }
+    }
+    
+//---------- Excepciones ----------
+    private void excepcionCampoVacio(String dato) throws CampoVacioException {
+        if(dato.isEmpty()){
+            throw new CampoVacioException("Campo/s vacio");
+        }
+    }
+    
+    private void excepcionTipoDeDato(String dato, String expresionRegular) throws TipoDeDatoException {
+        if(!dato.matches(expresionRegular)){
+            throw new TipoDeDatoException("Tipo de dato invalido. Ingrese unicamente ");
+        }
+    }
+    
+    private void excepcionRangoNumerico(int num) throws RangoNumericoException {
+        if(num < 1 || num > 10000){
+            throw new RangoNumericoException("Solo se permiten valores entre 1 y 10.000");
+        }
     }
 
     /**
@@ -81,6 +137,24 @@ public class NuevaComidaView extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel6.setText("Calorias");
 
+        jTexFiNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiNombreKeyReleased(evt);
+            }
+        });
+
+        jTexFiDetalle.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiDetalleKeyReleased(evt);
+            }
+        });
+
+        jTexFiCalorias.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiCaloriasKeyReleased(evt);
+            }
+        });
+
         jLabel11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 0, 0));
         jLabel11.setText("*");
@@ -104,25 +178,28 @@ public class NuevaComidaView extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(40, 40, 40)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabJTFNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabJTFDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTexFiNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                            .addComponent(jTexFiDetalle)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabJTFCalorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTexFiCalorias, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel14)))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(40, 40, 40)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabJTFNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabJTFDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTexFiNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                                    .addComponent(jTexFiDetalle)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(32, 32, 32)
+                                .addComponent(jTexFiCalorias, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(jLabel14))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabJTFCalorias, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(4, 4, 4)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
@@ -156,6 +233,11 @@ public class NuevaComidaView extends javax.swing.JInternalFrame {
         );
 
         jButGuardar.setText("Guardar");
+        jButGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButGuardarActionPerformed(evt);
+            }
+        });
 
         jButCancelar.setText("Cancelar");
         jButCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -165,6 +247,11 @@ public class NuevaComidaView extends javax.swing.JInternalFrame {
         });
 
         jButLimpiar.setText("Limpiar");
+        jButLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -252,6 +339,90 @@ public class NuevaComidaView extends javax.swing.JInternalFrame {
         
         this.dispose();
     }//GEN-LAST:event_jButCancelarActionPerformed
+
+    private void jButGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButGuardarActionPerformed
+        // TODO add your handling code here:
+
+        String ingSolo = "letras";
+        try{
+            String nombre = jTexFiNombre.getText(); excepcionCampoVacio(nombre); excepcionTipoDeDato(nombre, "^[a-zA-ZÀ-ÖØ-öø-ÿ ]*$");
+            ingSolo+= ", números y signos permitidos (.,¡!;:-'/\"()%*)";
+            String detalle = jTexFiDetalle.getText(); excepcionCampoVacio(detalle); excepcionTipoDeDato(detalle, 
+                    "^[\\p{L}\\p{N}.¡!;:,'\"/%()* -]*$");
+            String caloriasCad = jTexFiCalorias.getText(); excepcionCampoVacio(caloriasCad);
+            int calorias = (int) Long.parseLong(caloriasCad); excepcionRangoNumerico(calorias);
+            boolean estado = true;
+
+            Comida comida = new Comida(nombre, detalle, calorias, estado);
+            
+            if(comiData.guardarComida(comida)){
+                setearTextoEnCampoNro(4, "");
+                
+                this.dispose();
+            }
+        } catch(CampoVacioException cve){
+            JOptionPane.showMessageDialog(null, cve.getMessage()+". Llene todos los campos indicados", "  Mensaje", 1);
+        } catch(TipoDeDatoException tdde){
+            JOptionPane.showMessageDialog(null, tdde.getMessage()+ingSolo, "  Mensaje", 1);
+        } catch(NumberFormatException nfe){
+            JOptionPane.showMessageDialog(null, "Ingrese unicamente números enteros", "  Mensaje", 1);
+        } catch(RangoNumericoException rne){
+            JOptionPane.showMessageDialog(null, rne.getMessage(), "  Mensaje", 1);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButGuardarActionPerformed
+
+    private void jButLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButLimpiarActionPerformed
+        // TODO add your handling code here:
+        
+        setearTextoEnCampoNro(4, "");
+        setearTextoEnEtiquetaNro(4, "");
+    }//GEN-LAST:event_jButLimpiarActionPerformed
+
+    private void jTexFiNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiNombreKeyReleased
+        // TODO add your handling code here:
+        setearTextoEnEtiquetaNro(1, "");
+        
+        try{
+            String nombre = jTexFiNombre.getText(); excepcionTipoDeDato(nombre, "^[a-zA-ZÀ-ÖØ-öø-ÿ ]*$");
+            
+            if(comiData.buscarComidaPorNombreBoolean(nombre)){
+                setearTextoEnEtiquetaNro(1, "el nombre está en uso");
+            }
+        } catch(TipoDeDatoException tdde){
+            setearTextoEnEtiquetaNro(1, "solo letras");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jTexFiNombreKeyReleased
+
+    private void jTexFiDetalleKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiDetalleKeyReleased
+        // TODO add your handling code here:
+        setearTextoEnEtiquetaNro(2, "");
+        
+        try{
+            String detalle = jTexFiDetalle.getText(); excepcionTipoDeDato(detalle, "^[\\p{L}\\p{N}.¡!;:,'\"/%()* -]*$");
+        } catch(TipoDeDatoException tdde){
+            setearTextoEnEtiquetaNro(2, "solo letras, números y signos (.,¡!;:-'/\"()%*)");
+        }
+    }//GEN-LAST:event_jTexFiDetalleKeyReleased
+
+    private void jTexFiCaloriasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiCaloriasKeyReleased
+        // TODO add your handling code here:
+        setearTextoEnEtiquetaNro(3, "");
+        
+        try{
+            String caloriasCad = jTexFiCalorias.getText(); excepcionCampoVacio(caloriasCad);
+            int calorias = (int) Long.parseLong(caloriasCad); excepcionRangoNumerico(calorias);
+        } catch(CampoVacioException cve){
+            //Capturo está excepción para evitar que intente parsear una cadena vacia
+        } catch(NumberFormatException nfe){
+            setearTextoEnEtiquetaNro(3, "solo números enteros");
+        } catch(RangoNumericoException rne){
+            setearTextoEnEtiquetaNro(3, "desde 1 hasta 10.000");
+        }
+    }//GEN-LAST:event_jTexFiCaloriasKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

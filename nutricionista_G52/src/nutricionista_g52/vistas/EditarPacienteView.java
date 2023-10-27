@@ -32,15 +32,8 @@ public class EditarPacienteView extends javax.swing.JInternalFrame {
         initComponents();
         habilitarComponenetes(false);
         this.paciente = paciente;
-        llenarCamposConDatosDelPaciente(this.paciente);
+        llenarCamposConDatosDelPaciente();
         this.pacData = new PacienteData();
-        addInternalFrameListener(new InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosing(InternalFrameEvent e) {
-                // Cuando se cierra, notificar al marco principal.
-                firePropertyChange("internalFrameClosed", false, true);
-            }
-        });
     }
     
 //---------- Por Defecto ----------
@@ -50,12 +43,12 @@ public class EditarPacienteView extends javax.swing.JInternalFrame {
         jTexFiDni.setEnabled(habilitado);
     }
     
-    private void llenarCamposConDatosDelPaciente(Paciente paciente){
-        jTexFiDni.setText(String.valueOf(paciente.getDni()));
-        jTexFiApellido.setText(paciente.getApellido());
-        jTexFiNombre.setText(paciente.getNombre());
-        jTexFiDomicilio.setText(paciente.getDomicilio());
-        jTexFiTelefono.setText(paciente.getTelefono());
+    private void llenarCamposConDatosDelPaciente(){
+        setearTextoEnCampoNro(1, String.valueOf(paciente.getDni()));
+        setearTextoEnCampoNro(2, paciente.getApellido());
+        setearTextoEnCampoNro(3, paciente.getNombre());
+        setearTextoEnCampoNro(4, paciente.getDomicilio());
+        setearTextoEnCampoNro(5, paciente.getTelefono());
     }
     
 //---------- Métodos Reune Métodos (método atajo)----------
@@ -263,11 +256,8 @@ public class EditarPacienteView extends javax.swing.JInternalFrame {
                             .addGap(28, 28, 28)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jTexFiDomicilio)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabJTFDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTexFiTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabJTFDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTexFiTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabJTFTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGap(12, 12, 12))
         );
@@ -411,8 +401,7 @@ public class EditarPacienteView extends javax.swing.JInternalFrame {
         } catch(RangoNumericoException rne){
             JOptionPane.showMessageDialog(null, "Número fuera de rango. "+rne.getMessage(), "  Mensaje", 1);
         } catch(TipoDeDatoException tdde){
-            JOptionPane.showMessageDialog(null, tdde.getMessage()+ingSolo,
-                    "  Mensaje", 1);
+            JOptionPane.showMessageDialog(null, tdde.getMessage()+ingSolo, "  Mensaje", 1);
         } catch(Exception e){
             e.printStackTrace();
         }

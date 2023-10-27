@@ -27,7 +27,7 @@ public class ComidaData {
         this.conex = Conexion.conectar();
     }
     
-    public void guardarComida(Comida comida){
+    public boolean guardarComida(Comida comida){
         String sql = "INSERT INTO comida (nombre, detalle, cantCalorias, estado) "
                 + "SELECT ?, ?, ?, ? WHERE NOT EXISTS("
                     + "SELECT nombre FROM comida WHERE nombre LIKE ?"
@@ -51,8 +51,10 @@ public class ComidaData {
                 comida.setIdComida(rs.getInt(1));
                 
                 JOptionPane.showMessageDialog(null, "Comida guardada", "  Mensaje", 1);
+                
+                return true;
             } else {
-                JOptionPane.showMessageDialog(null, "No se pudo guardar comida, verifique que el "
+                JOptionPane.showMessageDialog(null, "No se guardo la comida. Verifique que el "
                         + "\nnombre ingresado no este en uso", "  Mensaje", 1);
             }
         } catch(SQLException sqle){
@@ -65,6 +67,8 @@ public class ComidaData {
             cerrarPreparedStatement(ps);
             cerrarResultSet(rs);
         }
+        
+        return false;
     }
     
     public Comida buscarComidaPorId(int id){
@@ -139,9 +143,38 @@ public class ComidaData {
         return comida;
     }
     
-    public void modificarComida(Comida comida){
+    public boolean buscarComidaPorNombreBoolean(String nombre){
+        String sql = "SELECT * FROM comida WHERE UPPER(nombre) LIKE UPPER(?) AND estado = 1;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setString(1, nombre);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return true;
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return false;
+    }
+    
+    public boolean modificarComida(Comida comida){
         String sql = "UPDATE comida SET nombre = ?, detalle = ?, cantCalorias = ? WHERE NOT EXISTS("
-                    + "SELECT nombre FROM comida WHERE nombre LIKE ?"
+                    + "SELECT 1 FROM comida WHERE (idComida != ? AND UPPER(nombre) LIKE UPPER(?)) OR (idComida = ? AND "
+                    + "UPPER(nombre) LIKE UPPER(?) AND BINARY detalle LIKE ? AND cantCalorias = ?)"
                 + ") AND idComida = ? AND estado = 1;";
         PreparedStatement ps = null;
         
@@ -151,16 +184,25 @@ public class ComidaData {
             ps.setString(2, comida.getDetalle());
             ps.setInt(3, comida.getCantCalorias());
             
-            ps.setString(4, comida.getNombre());
+            ps.setInt(4, comida.getIdComida());
+            ps.setString(5, comida.getNombre());
             
-            ps.setInt(5, comida.getIdComida());
+            ps.setInt(6, comida.getIdComida());
+            ps.setString(7, comida.getNombre());
+            ps.setString(8, comida.getDetalle());
+            ps.setInt(9, comida.getCantCalorias());
+            
+            ps.setInt(10, comida.getIdComida());
             
             int modificados = ps.executeUpdate();
             
             if(modificados == 1){
                 JOptionPane.showMessageDialog(null, "Comida modificada", "  Mensaje", 1);
+                return true;
             } else {
-                JOptionPane.showMessageDialog(null, "No se pudo modificar comida", "  Mensaje", 1);
+                JOptionPane.showMessageDialog(null, "No se guardo ninguna modificación. Debe realizar al menos una "
+                        + "\nmodificación para guardarla. Si ha realizado modificaciones en el "
+                        + "\nnombre verifique que el nuevo nombre no esté ocupado", "  Mensaje", 1);
             }
         } catch(SQLException sqle){
             System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
@@ -171,6 +213,8 @@ public class ComidaData {
         } finally {
             cerrarPreparedStatement(ps);
         }
+        
+        return false;
     }
     
     public void borrarComida(int id){
@@ -223,6 +267,208 @@ public class ComidaData {
         } finally {
             cerrarPreparedStatement(ps);
         }
+    }
+    
+    public List<Comida> listarComidas(){
+        String sql = "SELECT * FROM comida WHERE estado = 1;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Comida> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(comida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Comida> listarComidasPorNombre(String nombre){
+        String sql = "SELECT * FROM comida WHERE UPPER(nombre) LIKE UPPER(?) AND estado = 1;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Comida> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setString(1, nombre);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(comida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Comida> listarComidasPorIdComida(String id){
+        String sql = "SELECT * FROM comida WHERE CONVERT(idComida, CHAR) LIKE ? AND estado = 1;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Comida> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setString(1, id);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(comida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Comida> listarComidasBorradas(){
+        String sql = "SELECT * FROM comida WHERE estado = 0;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Comida> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(comida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Comida> listarComidasBorradasPorNombre(String nombre){
+        String sql = "SELECT * FROM comida WHERE UPPER(nombre) LIKE UPPER(?) AND estado = 0;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Comida> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setString(1, nombre);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(comida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Comida> listarComidasBorradasPorIdComida(String id){
+        String sql = "SELECT * FROM comida WHERE CONVERT(idComida, CHAR) LIKE ? AND estado = 0;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Comida> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setString(1, id);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(comida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
     }
     
     public List<Comida> listarComidasConMenorCantidadCalorias(int calorias){
