@@ -27,42 +27,6 @@ public class PacienteData {
         this.conex = Conexion.conectar();
     }
     
-//    public void guardarPaciente(Paciente paciente){
-//        String sql = "INSERT INTO paciente (dni, apellido, nombre, domicilio, telefono, estado) "
-//                + "VALUES(?, ?, ?, ?, ?, ?);";
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        
-//        try{
-//            ps = conex.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//            ps.setInt(1, paciente.getDni());
-//            ps.setString(2, paciente.getApellido());
-//            ps.setString(3, paciente.getNombre());
-//            ps.setString(4, paciente.getDomicilio());
-//            ps.setString(5, paciente.getTelefono());
-//            ps.setBoolean(6, paciente.getEstado());
-//            ps.executeUpdate();
-//            
-//            rs = ps.getGeneratedKeys();
-//            
-//            if(rs.next()){
-//                paciente.setIdPaciente(rs.getInt(1));
-//                
-//                JOptionPane.showMessageDialog(null, "Paciente guardado", "  Mensaje", 1);
-//            } else {
-//                JOptionPane.showMessageDialog(null, "No se pudo guardar paciente", "  Mensaje", 1);
-//            }
-//        } catch(SQLException sqle){
-//            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
-//        } catch(HeadlessException he){
-//            System.err.println(he.getMessage());
-//        } catch(Exception e){
-//            e.printStackTrace();
-//        } finally {
-//            cerrarPreparedStatement(ps);
-//            cerrarResultSet(rs);
-//        }
-//    }
     public boolean guardarPaciente(Paciente paciente){
         String sql = "INSERT INTO paciente (dni, apellido, nombre, domicilio, telefono, estado) "
                 + "SELECT ?, ?, ?, ?, ?, ? WHERE NOT EXISTS("
@@ -393,41 +357,6 @@ public class PacienteData {
         
         return false;
     }
-    
-    
-    
-//    public void modificarPaciente(Paciente paciente){
-//        String sql = "UPDATE paciente SET dni = ?, apellido = ?, nombre = ?, domicilio = ?, telefono = ? "
-//                + "WHERE idPaciente = ? AND estado = 1;"; //Revisar si se va a requerir o no, en la condición, 
-//                                           //el estado del paciente
-//        PreparedStatement ps = null;
-//        
-//        try{
-//            ps = conex.prepareStatement(sql);
-//            ps.setInt(1, paciente.getDni());
-//            ps.setString(2, paciente.getApellido());
-//            ps.setString(3, paciente.getNombre());
-//            ps.setString(4, paciente.getDomicilio());
-//            ps.setString(5, paciente.getTelefono());
-//            ps.setInt(6, paciente.getIdPaciente());
-//            
-//            int modificados = ps.executeUpdate();
-//            
-//            if(modificados == 1){
-//                JOptionPane.showMessageDialog(null, "Paciente modificado", "  Mensaje", 1);
-//            } else {
-//                JOptionPane.showMessageDialog(null, "No se encontro paciente", "  Mensaje", 1);
-//            }
-//        } catch(SQLException sqle){
-//            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
-//        } catch(HeadlessException he){
-//            System.err.println(he.getMessage());
-//        } catch(Exception e){
-//            e.printStackTrace();
-//        } finally {
-//            cerrarPreparedStatement(ps);
-//        }
-//    }
     
     public boolean modificarPaciente(Paciente paciente){
         String sql = "UPDATE paciente SET dni = ?, apellido = ?, nombre = ?, domicilio = ?, telefono = ? "
