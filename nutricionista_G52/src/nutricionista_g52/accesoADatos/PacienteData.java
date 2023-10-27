@@ -264,6 +264,82 @@ public class PacienteData {
         return registro;
     }
     
+    public List<Paciente> listarPacientesBorradosPorApellido(String apellido){
+        String sql = "SELECT * FROM paciente WHERE UPPER(apellido) LIKE UPPER(?) AND estado = 0;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Paciente> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setString(1, apellido);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Paciente paciente = new Paciente();
+                paciente.setIdPaciente(rs.getInt("idPaciente"));
+                paciente.setDni(rs.getInt("dni"));
+                paciente.setApellido(rs.getString("apellido"));
+                paciente.setNombre(rs.getString("nombre"));
+                paciente.setDomicilio(rs.getString("domicilio"));
+                paciente.setTelefono(rs.getString("telefono"));
+                paciente.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(paciente);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Paciente> listarPacientesBorradosPorDni(String dni){
+        String sql = "SELECT * FROM paciente WHERE CONVERT(dni, CHAR) LIKE ? AND estado = 0;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Paciente> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setString(1, dni);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Paciente paciente = new Paciente();
+                paciente.setIdPaciente(rs.getInt("idPaciente"));
+                paciente.setDni(rs.getInt("dni"));
+                paciente.setApellido(rs.getString("apellido"));
+                paciente.setNombre(rs.getString("nombre"));
+                paciente.setDomicilio(rs.getString("domicilio"));
+                paciente.setTelefono(rs.getString("telefono"));
+                paciente.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(paciente);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
     public boolean buscarPacientePorDni(int dni){
         String sql = "SELECT 1 FROM paciente WHERE dni = ?";
         PreparedStatement ps = null;
@@ -317,6 +393,8 @@ public class PacienteData {
         
         return false;
     }
+    
+    
     
 //    public void modificarPaciente(Paciente paciente){
 //        String sql = "UPDATE paciente SET dni = ?, apellido = ?, nombre = ?, domicilio = ?, telefono = ? "
@@ -535,8 +613,69 @@ public class PacienteData {
         }
     }
     
+    public void restaurarPacientePorDni(int dni){
+        String sql = "UPDATE paciente SET estado = 1 WHERE dni = ? AND estado = 0;";
+        PreparedStatement ps = null;
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, dni);
+            
+            int restaurados = ps.executeUpdate();
+            
+            if(restaurados == 1){
+                JOptionPane.showMessageDialog(null, "Paciente restaurado", "  Mensaje", 1);
+            } else{
+                JOptionPane.showMessageDialog(null, "No se encontro paciente", "  Mensaje", 1);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(HeadlessException he){
+            System.err.println(he.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+        }
+    }
+    
     public List<Paciente> listarPacientes(){
         String sql = "SELECT * FROM paciente WHERE estado = 1;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Paciente> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Paciente paciente = new Paciente();
+                paciente.setIdPaciente(rs.getInt("idPaciente"));
+                paciente.setDni(rs.getInt("dni"));
+                paciente.setApellido(rs.getString("apellido"));
+                paciente.setNombre(rs.getString("nombre"));
+                paciente.setDomicilio(rs.getString("domicilio"));
+                paciente.setTelefono(rs.getString("telefono"));
+                paciente.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(paciente);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Paciente> listarPacientesBorrados(){
+        String sql = "SELECT * FROM paciente WHERE estado = 0;";
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Paciente> registro = new ArrayList<>();
