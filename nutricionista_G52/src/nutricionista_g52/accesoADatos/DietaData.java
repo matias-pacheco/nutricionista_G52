@@ -32,7 +32,7 @@ public class DietaData {
         this.pacData = new PacienteData();
     }
     
-    public void guardarDieta(Dieta dieta){
+    public boolean guardarDieta(Dieta dieta){
         String sql = "INSERT INTO dieta (nombre, idPaciente, fechaInicial, pesoInicial, fechaFinal, pesoFinal) "
                 + "SELECT ?, ?, ?, ?, ?, ? WHERE NOT EXISTS("
                     + "SELECT 1 FROM dieta WHERE idPaciente = ? AND fechaFinal >= ?"
@@ -59,6 +59,7 @@ public class DietaData {
                 dieta.setIdDieta(rs.getInt(1));
                 
                 JOptionPane.showMessageDialog(null, "Dieta guardada", "  Mensaje", 1);
+                return true;
             } else {
                 JOptionPane.showMessageDialog(null, "No se puede iniciar otra dieta hasta que el \npaciente no "
                         + "finalize la que está en proceso", "  Mensaje", 1);
@@ -73,6 +74,8 @@ public class DietaData {
             cerrarPreparedStatement(ps);
             cerrarResultSet(rs);
         }
+        
+        return false;
     }
     
     public Dieta buscarDieta(int id){
@@ -422,6 +425,32 @@ public class DietaData {
         }
         
         return registro;
+    }
+    
+    public boolean isPacienteHaceDieta(int dni){
+        String sql = "SELECT 1 FROM paciente JOIN dieta ON(paciente.idPaciente = dieta.idPaciente) WHERE dni = ? AND fechaFinal IN("
+                    + "SELECT MAX(fechaFinal) FROM dieta WHERE idPaciente IN("
+                        + "SELECT idPaciente FROM paciente WHERE dni = ?"
+                    + ") AND fechaFinal >= CURRENT_DATE"
+                + ") AND estado = 1;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, dni);
+            ps.setInt(2, dni);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return true;
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        }
+        
+        return false;
     }
     
     private void cerrarPreparedStatement(PreparedStatement ps){
