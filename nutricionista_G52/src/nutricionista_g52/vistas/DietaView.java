@@ -5,17 +5,43 @@
  */
 package nutricionista_g52.vistas;
 
+import nutricionista_g52.entidades.Dieta;
+
 /**
  *
  * @author Matías Pacheco
  */
 public class DietaView extends javax.swing.JInternalFrame {
-
+    private Dieta dieta;
     /**
      * Creates new form ComidasView
      */
     public DietaView() {
         initComponents();
+    }
+    
+    public DietaView(Dieta dieta) {
+        initComponents();
+        this.dieta = dieta;
+        llenarDatosDeLaDieta();
+        desHabilitarComponentes();
+    }
+    
+    private void llenarDatosDeLaDieta(){
+        jLabNombre.setText(dieta.getNombre());
+        jLabPacienteDni.setText(String.valueOf(dieta.getPaciente().getDni()));
+        jLabDesde.setText(dieta.getFechaInicial().toString());
+        jLabPesoInicial.setText(String.valueOf(dieta.getPesoInicial()));
+        jLabHasta.setText(dieta.getFechaFinal().toString());
+        jLabPesoFinal.setText(String.valueOf(dieta.getPesoFinal()));
+    }
+    
+    private void desHabilitarComponentes(){//TEMPORAL hasta implementar funcionalidad
+        jButComidas.setEnabled(false);
+        jButEditar.setEnabled(false);
+        
+        jButComidas.setVisible(false);
+        jButEditar.setVisible(false);
     }
 
     /**
@@ -35,12 +61,14 @@ public class DietaView extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabNombreDieta = new javax.swing.JLabel();
-        jLabNombrePaciente = new javax.swing.JLabel();
+        jLabNombre = new javax.swing.JLabel();
+        jLabPacienteDni = new javax.swing.JLabel();
         jLabDesde = new javax.swing.JLabel();
         jLabPesoInicial = new javax.swing.JLabel();
         jLabHasta = new javax.swing.JLabel();
         jLabPesoFinal = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButEditar = new javax.swing.JButton();
         jButCancelar = new javax.swing.JButton();
@@ -74,7 +102,7 @@ public class DietaView extends javax.swing.JInternalFrame {
         jLabel3.setText("Nombre");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel4.setText("Paciente");
+        jLabel4.setText("Paciente (DNI)");
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel5.setText("Desde");
@@ -88,11 +116,11 @@ public class DietaView extends javax.swing.JInternalFrame {
         jLabel18.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel18.setText("Hasta");
 
-        jLabNombreDieta.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabNombreDieta.setText("Nombre Dieta");
+        jLabNombre.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabNombre.setText("Nombre Dieta");
 
-        jLabNombrePaciente.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabNombrePaciente.setText("Nombre Paciente");
+        jLabPacienteDni.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabPacienteDni.setText("Nombre Paciente");
 
         jLabDesde.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabDesde.setText("Fecha de Inicio");
@@ -105,6 +133,12 @@ public class DietaView extends javax.swing.JInternalFrame {
 
         jLabPesoFinal.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabPesoFinal.setText("kg");
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setText("kg");
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel7.setText("kg");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -119,19 +153,25 @@ public class DietaView extends javax.swing.JInternalFrame {
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel16))
-                        .addGap(38, 38, 38)
+                        .addGap(19, 19, 19)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabPesoInicial)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabPesoInicial)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2))
                             .addComponent(jLabDesde)
-                            .addComponent(jLabNombrePaciente)
-                            .addComponent(jLabNombreDieta)))
+                            .addComponent(jLabPacienteDni)
+                            .addComponent(jLabNombre)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel18)
                             .addComponent(jLabel6))
                         .addGap(45, 45, 45)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabPesoFinal)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabPesoFinal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7))
                             .addComponent(jLabHasta))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -141,11 +181,11 @@ public class DietaView extends javax.swing.JInternalFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabNombreDieta))
+                    .addComponent(jLabNombre))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabNombrePaciente))
+                    .addComponent(jLabPacienteDni))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -153,7 +193,8 @@ public class DietaView extends javax.swing.JInternalFrame {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jLabPesoInicial))
+                    .addComponent(jLabPesoInicial)
+                    .addComponent(jLabel2))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
@@ -161,7 +202,8 @@ public class DietaView extends javax.swing.JInternalFrame {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jLabPesoFinal))
+                    .addComponent(jLabPesoFinal)
+                    .addComponent(jLabel7))
                 .addGap(22, 22, 22))
         );
 
@@ -283,17 +325,19 @@ public class DietaView extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButEditar;
     private javax.swing.JLabel jLabDesde;
     private javax.swing.JLabel jLabHasta;
-    private javax.swing.JLabel jLabNombreDieta;
-    private javax.swing.JLabel jLabNombrePaciente;
+    private javax.swing.JLabel jLabNombre;
+    private javax.swing.JLabel jLabPacienteDni;
     private javax.swing.JLabel jLabPesoFinal;
     private javax.swing.JLabel jLabPesoInicial;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

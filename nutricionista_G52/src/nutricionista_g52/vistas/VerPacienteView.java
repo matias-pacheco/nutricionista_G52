@@ -5,17 +5,33 @@
  */
 package nutricionista_g52.vistas;
 
+import nutricionista_g52.entidades.Paciente;
+
 /**
  *
  * @author Matías Pacheco
  */
 public class VerPacienteView extends javax.swing.JInternalFrame {
-
+    private Paciente paciente;
     /**
      * Creates new form ComidasView
      */
     public VerPacienteView() {
         initComponents();
+    }
+    
+    public VerPacienteView(Paciente paciente) {
+        initComponents();
+        this.paciente = paciente;
+        llenarDatosDelPaciente();
+    }
+    
+    private void llenarDatosDelPaciente(){
+        jLabDni.setText(String.valueOf(paciente.getDni()));
+        jLabApellido.setText(paciente.getApellido());
+        jLabNombre.setText(paciente.getNombre());
+        jLabDomicilio.setText(paciente.getDomicilio());
+        jLabTelefono.setText(paciente.getTelefono());
     }
 
     /**
@@ -34,11 +50,11 @@ public class VerPacienteView extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabNombreDieta = new javax.swing.JLabel();
-        jLabNombrePaciente = new javax.swing.JLabel();
-        jLabDesde = new javax.swing.JLabel();
-        jLabPesoInicial = new javax.swing.JLabel();
-        jLabHasta = new javax.swing.JLabel();
+        jLabDni = new javax.swing.JLabel();
+        jLabApellido = new javax.swing.JLabel();
+        jLabNombre = new javax.swing.JLabel();
+        jLabDomicilio = new javax.swing.JLabel();
+        jLabTelefono = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButCancelar = new javax.swing.JButton();
 
@@ -54,9 +70,9 @@ public class VerPacienteView extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(145, 145, 145)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(145, 145, 145))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,20 +97,20 @@ public class VerPacienteView extends javax.swing.JInternalFrame {
         jLabel18.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel18.setText("Teléfono");
 
-        jLabNombreDieta.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabNombreDieta.setText("Nro");
+        jLabDni.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabDni.setText("Nro");
 
-        jLabNombrePaciente.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabNombrePaciente.setText("Apellido");
+        jLabApellido.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabApellido.setText("Apellido");
 
-        jLabDesde.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabDesde.setText("Nombre");
+        jLabNombre.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabNombre.setText("Nombre");
 
-        jLabPesoInicial.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabPesoInicial.setText("Nombre y Dirección");
+        jLabDomicilio.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabDomicilio.setText("Nombre y Dirección");
 
-        jLabHasta.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabHasta.setText("Nro");
+        jLabTelefono.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabTelefono.setText("Nro");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -111,14 +127,14 @@ public class VerPacienteView extends javax.swing.JInternalFrame {
                             .addComponent(jLabel16))
                         .addGap(54, 54, 54)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabDesde)
-                            .addComponent(jLabPesoInicial)
-                            .addComponent(jLabNombrePaciente)
-                            .addComponent(jLabNombreDieta)))
+                            .addComponent(jLabNombre)
+                            .addComponent(jLabDomicilio)
+                            .addComponent(jLabApellido)
+                            .addComponent(jLabDni)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addGap(56, 56, 56)
-                        .addComponent(jLabHasta)))
+                        .addComponent(jLabTelefono)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -127,23 +143,23 @@ public class VerPacienteView extends javax.swing.JInternalFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabNombreDieta))
+                    .addComponent(jLabDni))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabNombrePaciente))
+                    .addComponent(jLabApellido))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jLabDesde))
+                    .addComponent(jLabNombre))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jLabPesoInicial))
+                    .addComponent(jLabDomicilio))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(jLabHasta))
+                    .addComponent(jLabTelefono))
                 .addGap(22, 22, 22))
         );
 
@@ -197,18 +213,17 @@ public class VerPacienteView extends javax.swing.JInternalFrame {
 
     private void jButCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButCancelarActionPerformed
         // TODO add your handling code here:
-        
         this.dispose();
     }//GEN-LAST:event_jButCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButCancelar;
-    private javax.swing.JLabel jLabDesde;
-    private javax.swing.JLabel jLabHasta;
-    private javax.swing.JLabel jLabNombreDieta;
-    private javax.swing.JLabel jLabNombrePaciente;
-    private javax.swing.JLabel jLabPesoInicial;
+    private javax.swing.JLabel jLabApellido;
+    private javax.swing.JLabel jLabDni;
+    private javax.swing.JLabel jLabDomicilio;
+    private javax.swing.JLabel jLabNombre;
+    private javax.swing.JLabel jLabTelefono;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
