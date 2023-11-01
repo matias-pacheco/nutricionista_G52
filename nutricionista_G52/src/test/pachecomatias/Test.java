@@ -679,9 +679,29 @@ public class Test {
 //        for(int i = 0; i < arreglo.length; i++){
 //            System.out.println(arreglo[i]);
 //        }
-        
-        for(Object obj : dieData.listarPacientesQueNoAlcanzaronPesoBuscadoPorOrdenAsc("apellido")){
-            System.out.println(obj);
-        }
+
+
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//        for(Object obj : dieData.listarPacientesQueNoAlcanzaronPesoBuscadoPorOrdenAsc("apellido")){
+//            System.out.println(obj);
+//        }
+
+//        for(Object obj : dieComiData.listarComidasDeDietaYDieta_ComidaPorIdPacienteOrdenadoAscPor(2, "nombre")){
+//            System.out.println(obj);
+//        }
+
+//        String hola = "";
+//        
+//        hola+= "adios";
+//        
+//        System.out.println(hola);
+
+//        Dieta_Comida dietaComida = new Dieta_Comida(comiData.buscarComidaPorId(3), dieData.buscarDieta(60), 
+//                HorarioAlimenticio.ALMUERZO, 880);
+//        dieComiData.modificarDieta_Comida(dietaComida);
     }
 }
