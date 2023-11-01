@@ -8,6 +8,7 @@ package test.pachecomatias;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import javax.swing.JOptionPane;
 import nutricionista_g52.accesoADatos.ComidaData;
 import nutricionista_g52.accesoADatos.DietaData;
 import nutricionista_g52.accesoADatos.Dieta_ComidaData;
@@ -19,6 +20,7 @@ import nutricionista_g52.entidades.Dieta_Comida;
 import nutricionista_g52.entidades.Historial_Peso;
 import nutricionista_g52.entidades.Paciente;
 import nutricionista_g52.entidades.enumeraciones.HorarioAlimenticio;
+import nutricionista_g52.vistas.enumeraciones.NombreDeDieta;
 
 /**
  *
@@ -607,5 +609,79 @@ public class Test {
 //        for(Comida comi : registro1){
 //            System.out.println(esp+comi+"\n");
 //        }
+
+//---------- P R U E B A   M É T O D O S   D E   S T R I N G ----------
+//----- MÉTODO REPLACE -----
+//        System.out.println("Hola    soy          Jo                     r               ge".replace(" ", ""));
+
+        
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//        System.out.println(JOptionPane.showConfirmDialog(null, "", "  Eliminar Paciente", 0));
+        
+//        for(Paciente pac : pacData.listarPacientesPorApellido("Bu%")){
+//            System.out.println(pac);
+//        }
+
+//        for(Paciente pac : pacData.listarPacientesPorDni("2%")){
+//            System.out.println(pac);
+//        }
+        
+//        double num = 2;
+//        System.out.println(num);
+
+//        String ss = null;
+//        
+//        JOptionPane.showInputDialog(null, "", "", 1);
+//        
+//        String ejemplo = "H o lá A So  y  JORgee Ö";
+//        
+//        String ee =ejemplo.replace(" ", "_");
+//        
+//        System.out.println(ee.toUpperCase());
+        
+//        NombreDeDieta nn = NombreDeDieta.ATKINS;
+//        
+//        nn.agregarDieta("h  o  l      a");
+//        nn.agregarDieta("h  dd d");
+//        nn.agregarDieta("adi     os");
+//        
+//        int esp = 0;
+//        
+//        for(int i = 0; i < nn.getDietasAgregadas().size(); i++){
+//            String cadena = nn.getDietasAgregadas().get(i);
+//            String nue = cadena.replaceAll("\\s+", " ");
+//            
+//            System.out.println(nue);
+//        }
+//        
+//        Object obj = new Object();
+//        
+//        obj = 1;
+//        
+//        int ff = (int)obj;
+        
+//        System.out.println(nn.getDietasAgregadas().get(0));
+//        System.out.println(nn.getDietasAgregadas().get(1));
+//        System.out.println(nn.getDietasAgregadas().get(2));
+
+//        Object[] arreglo = new Object[5];
+//        
+//        arreglo[0] = "hola1";
+//        arreglo[1] = "hola2";
+//        arreglo[2] = "hola3";
+//        arreglo[3] = "hola4";
+//        arreglo[4] = "hola5";
+//        
+//        for(int i = 0; i < arreglo.length; i++){
+//            System.out.println(arreglo[i]);
+//        }
+        
+        for(Object obj : dieData.listarPacientesQueNoAlcanzaronPesoBuscadoPorOrdenAsc("apellido")){
+            System.out.println(obj);
+        }
     }
 }

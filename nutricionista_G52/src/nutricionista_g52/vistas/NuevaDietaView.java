@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import nutricionista_g52.accesoADatos.DietaData;
+import nutricionista_g52.accesoADatos.Historial_PesoData;
 import nutricionista_g52.accesoADatos.PacienteData;
 import nutricionista_g52.entidades.Dieta;
+import nutricionista_g52.entidades.Historial_Peso;
 import nutricionista_g52.entidades.Paciente;
 import nutricionista_g52.vistas.enumeraciones.NombreDeDieta;
 import nutricionista_g52.vistas.excepciones.CampoVacioException;
@@ -32,6 +34,7 @@ import nutricionista_g52.vistas.excepciones.TipoDeDatoException;
 public class NuevaDietaView extends javax.swing.JInternalFrame {
     private PacienteData pacData;
     private DietaData dieData;
+    private Historial_PesoData hisPesodata;
 
     /**
      * Creates new form ComidasView
@@ -41,6 +44,7 @@ public class NuevaDietaView extends javax.swing.JInternalFrame {
         this.pacData = new PacienteData();
         this.dieData = new DietaData();
         porDefecto();
+        this.hisPesodata = new Historial_PesoData();
     }
     
 //---------- Por Defecto ----------
@@ -57,7 +61,7 @@ public class NuevaDietaView extends javax.swing.JInternalFrame {
         jLabJTFDesde.setEnabled(habilitado);
         jLabJTFDesdeCO.setEnabled(habilitado);
         jDaChDesde.setEnabled(habilitado);
-        jButAgregar.setEnabled(habilitado);
+        jButAgregar.setEnabled(habilitado); //VISIBILIZAR LUEGO DE IMPLEMENTAR TABLA
     }
     
     private void setearFechaJDaChDesde(){
@@ -74,7 +78,7 @@ public class NuevaDietaView extends javax.swing.JInternalFrame {
     }
     
     private void visibilizarComponentes(boolean habilitado){
-        jButAgregar.setVisible(habilitado);
+        jButAgregar.setVisible(habilitado); //VISIBILIZAR LUEGO DE IMPLEMENTAR TABLA
     }
     
     private void setearJLabJTFHasta(){
@@ -380,68 +384,67 @@ public class NuevaDietaView extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(55, 55, 55)
-                                .addComponent(jComBoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(4, 4, 4)
-                                .addComponent(jLabel11)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel18))
-                                .addGap(37, 37, 37)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jDaChHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(3, 3, 3)
-                                        .addComponent(jLabel19))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jTexFiPesoFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(4, 4, 4)
-                                        .addComponent(jLabel14))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel16)
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jTexFiPesoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(4, 4, 4)
-                                        .addComponent(jLabel17))
-                                    .addComponent(jLabJTFPesoInicial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabDesde)
-                                .addGap(65, 65, 65)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabJTFDesde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jDaChDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(3, 3, 3)
-                                        .addComponent(jLabJTFDesdeCO)))))
-                        .addGap(12, 12, 12))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addGap(11, 11, 11)
+                        .addGap(12, 12, 12)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jTexFiPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(4, 4, 4)
-                                .addComponent(jLabel12))
-                            .addComponent(jLabJTFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabJTFPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12))))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabJTFHasta, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-                    .addComponent(jLabJTFPesoFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(55, 55, 55)
+                                    .addComponent(jComBoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(4, 4, 4)
+                                    .addComponent(jLabel11)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6)
+                                        .addComponent(jLabel18))
+                                    .addGap(37, 37, 37)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(jDaChHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(3, 3, 3)
+                                            .addComponent(jLabel19))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(jTexFiPesoFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(4, 4, 4)
+                                            .addComponent(jLabel14))))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel16)
+                                    .addGap(30, 30, 30)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(jTexFiPesoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(4, 4, 4)
+                                            .addComponent(jLabel17))
+                                        .addComponent(jLabJTFPesoInicial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabDesde)
+                                    .addGap(65, 65, 65)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabJTFDesde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(jDaChDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(3, 3, 3)
+                                            .addComponent(jLabJTFDesdeCO)))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addGap(11, 11, 11)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jTexFiPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(jLabel12))
+                                    .addComponent(jLabJTFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabJTFPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(122, 122, 122)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabJTFHasta, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                            .addComponent(jLabJTFPesoFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(12, 12, 12))
         );
         jPanel2Layout.setVerticalGroup(
@@ -644,6 +647,8 @@ public class NuevaDietaView extends javax.swing.JInternalFrame {
             
             if(dieData.guardarDieta(dieta)){
                 setearTextoEnCampoNro(7, "");
+                Historial_Peso historialPeso = new Historial_Peso(paciente, desde, pesoInicial);
+                hisPesodata.guardarHistorial_Peso(historialPeso);
                 
                 this.dispose();
             }
@@ -689,7 +694,7 @@ public class NuevaDietaView extends javax.swing.JInternalFrame {
                         entrada = false;
                     }
                 }
-                
+
                 if(!entrada){
                     agregarNombreAlEnum(nuevoNombre);
                     actualizarJComBoNombre();
@@ -711,36 +716,16 @@ public class NuevaDietaView extends javax.swing.JInternalFrame {
     private void jComBoNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComBoNombreActionPerformed
         // TODO add your handling code here:
         setearTextoEnEtiquetaNro(1, "");
-        
+
         if(jComBoNombre.getSelectedIndex() == 0){
             setearTextoEnEtiquetaNro(1, "seleccione un nombre");
         }
     }//GEN-LAST:event_jComBoNombreActionPerformed
 
-    private void jTexFiPacienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiPacienteKeyReleased
-        // TODO add your handling code here:
-        setearTextoEnEtiquetaNro(2, "");
-        
-        try{
-            String dniCad = jTexFiPaciente.getText(); excepcionCampoVacio(dniCad);
-            int dni = (int) Long.parseLong(dniCad); excepcionRangoNumerico(dni, 1000000, 99999999);
-            
-            if(dieData.isPacienteHaceDieta(dni)){
-                setearTextoEnEtiquetaNro(2, "dieta vigente");
-            }
-        } catch(CampoVacioException cve){
-            //Capturo está excepción para evitar que intente parsear una cadena vacia
-        } catch(NumberFormatException nfe){
-            setearTextoEnEtiquetaNro(2, "solo números");
-        } catch(RangoNumericoException rne){
-            setearTextoEnEtiquetaNro(2, "desde 1.000.000 hasta 99.999.999");
-        }
-    }//GEN-LAST:event_jTexFiPacienteKeyReleased
-
     private void jTexFiPesoInicialKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiPesoInicialKeyReleased
         // TODO add your handling code here:
         setearTextoEnEtiquetaNro(4, "");
-        
+
         try{
             String pesoInicialCad = jTexFiPesoInicial.getText(); excepcionCampoVacio(pesoInicialCad);
             double pesoInicial = Double.parseDouble(pesoInicialCad); excepcionRangoNumerico(pesoInicial, 1, 600);
@@ -756,7 +741,7 @@ public class NuevaDietaView extends javax.swing.JInternalFrame {
     private void jTexFiPesoFinalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiPesoFinalKeyReleased
         // TODO add your handling code here:
         setearTextoEnEtiquetaNro(6, "");
-        
+
         try{
             String pesoFinalCad = jTexFiPesoFinal.getText(); excepcionCampoVacio(pesoFinalCad);
             double pesoFinal = Double.parseDouble(pesoFinalCad); excepcionRangoNumerico(pesoFinal, 1, 600);
@@ -768,6 +753,26 @@ public class NuevaDietaView extends javax.swing.JInternalFrame {
             setearTextoEnEtiquetaNro(6, "desde 1 hasta 600");
         }
     }//GEN-LAST:event_jTexFiPesoFinalKeyReleased
+
+    private void jTexFiPacienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiPacienteKeyReleased
+        // TODO add your handling code here:
+        setearTextoEnEtiquetaNro(2, "");
+
+        try{
+            String dniCad = jTexFiPaciente.getText(); excepcionCampoVacio(dniCad);
+            int dni = (int) Long.parseLong(dniCad); excepcionRangoNumerico(dni, 1000000, 99999999);
+
+            if(dieData.isPacienteHaceDieta(dni)){
+                setearTextoEnEtiquetaNro(2, "dieta vigente");
+            }
+        } catch(CampoVacioException cve){
+            //Capturo está excepción para evitar que intente parsear una cadena vacia
+        } catch(NumberFormatException nfe){
+            setearTextoEnEtiquetaNro(2, "solo números");
+        } catch(RangoNumericoException rne){
+            setearTextoEnEtiquetaNro(2, "desde 1.000.000 hasta 99.999.999");
+        }
+    }//GEN-LAST:event_jTexFiPacienteKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButAgregar;

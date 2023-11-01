@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import nutricionista_g52.accesoADatos.DietaData;
 import nutricionista_g52.accesoADatos.PacienteData;
 import nutricionista_g52.entidades.Dieta;
+import nutricionista_g52.entidades.Historial_Peso;
 import nutricionista_g52.entidades.Paciente;
 import nutricionista_g52.vistas.EditarPacienteView;
 import nutricionista_g52.vistas.MenuPrincipalView;
@@ -55,9 +56,6 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
         deshabilitarElReordenamientoDeColumnas();
         habilitarComponentes(false);
         llenaTablaPorDefecto();
-        
-        jButPeso.setEnabled(false);//TEMPORAL hasta implementar funcionalidad
-        jButPeso.setVisible(false);
     }
     
     private void listarJComBoOrdenarPor(){
@@ -74,7 +72,7 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
     
     private void listarJComBoBuscarPorPeso(){
         jComBoBuscarPorPeso.addItem("TODOS");
-//        jComBoBuscarPorPeso.addItem("POR PESO ALCANZADO"); AGREGAR DESPUES
+        jComBoBuscarPorPeso.addItem("POR PESO ALCANZADO");
         jComBoBuscarPorPeso.addItem("POR PESO NO ALCANZADO");
     }
     
@@ -144,8 +142,8 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
     private void buscarFilasPorPesoAlcanzado(){
         switch(jComBoBuscarPorPeso.getSelectedIndex()){
             case 0:{ llenarFilasDeLaTabla(dieData.listarPacientesDietaTerminadaEstrictoPorOrdenAsc(ordenarFilasPor())); break; }
-//            case 1:{ break; } AGREGAR DESPUES
-            case 1:{ llenarFilasDeLaTabla(dieData.listarPacientesQueNoAlcanzaronPesoBuscadoPorOrdenAsc(ordenarFilasPor())); break; }
+            case 1:{ llenarFilasDeLaTabla(dieData.listarPacientesQueAlcanzaronPesoBuscadoPorOrdenAsc(ordenarFilasPor())); break; }
+            case 2:{ llenarFilasDeLaTabla(dieData.listarPacientesQueNoAlcanzaronPesoBuscadoPorOrdenAsc(ordenarFilasPor())); break; }
         }
     }
     
@@ -162,6 +160,10 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
     private Paciente seleccionarPacienteEnTabla(){
         Paciente paciente = pacData.buscarpacientePorDni(seleccionarDniEnTabla());
         return paciente;
+    }
+    
+    private boolean dietaVigente(){
+        return dieData.isPacienteHaceDieta(seleccionarDniEnTabla());
     }
 
     /**
@@ -373,7 +375,16 @@ public class ConsultasPacientesView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         
         if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 2){
-            PesoView pesoV = new PesoView();
+            if(jTabConsultasPacientes.getSelectedRow() == -1){
+                try{
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar un paciente de la tabla", "  Mensaje", 1);
+                    return;
+                } catch(HeadlessException he){
+                    System.err.println(he.getMessage());
+                }
+            }
+            
+            PesoView pesoV = new PesoView(seleccionarPacienteEnTabla(), dietaVigente());
             pesoV.setVisible(true);
             
             int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - pesoV.getWidth()) / 2;

@@ -471,8 +471,76 @@ public class ComidaData {
         return registro;
     }
     
+    public List<Comida> listarComidasPorAproximacionCalorias(String calorias){
+        String sql = "SELECT * FROM comida WHERE CONVERT(cantCalorias, CHAR) LIKE ? AND estado = 1;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Comida> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setString(1, calorias);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(comida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
     public List<Comida> listarComidasConMenorCantidadCalorias(int calorias){
         String sql = "SELECT * FROM comida WHERE cantCalorias < ? AND estado = 1";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Comida> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, calorias);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                registro.add(comida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getMessage());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Comida> listarComidasConMayorCantidadCalorias(int calorias){
+        String sql = "SELECT * FROM comida WHERE cantCalorias > ? AND estado = 1";
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Comida> registro = new ArrayList<>();

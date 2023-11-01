@@ -5,25 +5,135 @@
  */
 package nutricionista_g52.vistas;
 
+import java.util.Collections;
+import java.util.List;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+import nutricionista_g52.accesoADatos.ComidaData;
+import nutricionista_g52.entidades.Comida;
 import nutricionista_g52.vistas.EditarPacienteView;
 import nutricionista_g52.vistas.MenuPrincipalView;
 import nutricionista_g52.vistas.NuevoPacienteView;
 import nutricionista_g52.vistas.PesoView;
+import nutricionista_g52.vistas.comparator.Comparadores;
+import nutricionista_g52.vistas.excepciones.CampoVacioException;
+import nutricionista_g52.vistas.excepciones.RangoNumericoException;
 
 /**
  *
  * @author Matías Pacheco
  */
 public class ConsultasComidasView extends javax.swing.JInternalFrame {
-
+    private DefaultTableModel modeloTab;
+    private ComidaData comiData;
+    
     /**
      * Creates new form PacientesView
      */
     public ConsultasComidasView() {
         initComponents();
+        this.modeloTab = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int fila, int columna){
+                return false;
+            }
+        };
+        this.comiData = new ComidaData();
+        porDefecto();
+    }
+    
+//---------- Por Defecto ----------
+    private void porDefecto(){
+        listarJComBoOrdenarPor();
+        listarJComBoBuscarPorCalorias();
+        agregarColumnasALaTabla();
+        deshabilitarElReordenamientoDeColumnas();
+        habilitarComponentes(false);
+        llenarTablaPorDefecto();
+    }
+    
+    private void listarJComBoOrdenarPor(){
+        jComBoOrdenarPor.addItem("POR NOMBRE");
+        jComBoOrdenarPor.addItem("POR CÓDIGO");
+        jComBoOrdenarPor.addItem("POR CALORÍAS");
+    }
+    
+    private void listarJComBoBuscarPorCalorias(){
+        jComBoBuscarPorCalorias.addItem("POR APROXIMACIÓN DE CALORÍAS");
+        jComBoBuscarPorCalorias.addItem("POR MAYOR CANTIDAD DE CALORÍAS");
+        jComBoBuscarPorCalorias.addItem("POR MENOR CANTIDAD DE CALORÍAS");
+    }
+    
+    private void agregarColumnasALaTabla(){
+        modeloTab.addColumn("CÓDIGO");
+        modeloTab.addColumn("COMIDA");
+        modeloTab.addColumn("DETALLE");
+        modeloTab.addColumn("CALORÍAS");
+        
+        jTabConsultasComidas.setModel(modeloTab);
+    }
+    
+    private void deshabilitarElReordenamientoDeColumnas(){
+        jTabConsultasComidas.getTableHeader().setReorderingAllowed(false);
+    }
+    
+    private void habilitarComponentes(boolean habilitado){
+        jButAgregar.setEnabled(habilitado);
+    }
+    
+    private void llenarTablaPorDefecto(){
+        vaciarFilasDeLaTabla();
+        llenarFilasDeLaTabla(comiData.listarComidas());
+    }
+    
+    private void llenarTablaPersonalizado(String calorias){
+        vaciarFilasDeLaTabla();
+        buscarComidasPorCalorias(calorias);
+    }
+    
+//---------- Listar, Ordenar, Vaciar ----------
+    private void llenarFilasDeLaTabla(List<Comida> registro){
+        for(Comida comida : ordenarFilasPor(registro)){
+            modeloTab.addRow(new Object[] {comida.getIdComida(), comida.getNombre(), comida.getDetalle(), comida.getCantCalorias()});
+        }
+    }
+    
+    private List<Comida> ordenarFilasPor(List<Comida> registro){
+        switch(jComBoOrdenarPor.getSelectedIndex()){
+            case 0:{ Collections.sort(registro, Comparadores.ordenarPorNombre); break; }
+            case 1:{ Collections.sort(registro, Comparadores.ordenarPorCodigo); break; }
+            case 2:{ Collections.sort(registro, Comparadores.ordenarPorCalorias); break; }
+        }
+        
+        return registro;
+    }
+    
+    private void buscarComidasPorCalorias(String calorias){
+        switch(jComBoBuscarPorCalorias.getSelectedIndex()){
+            case 0:{ llenarFilasDeLaTabla(comiData.listarComidasPorAproximacionCalorias(calorias+"%")); break; }
+            case 1:{ llenarFilasDeLaTabla(comiData.listarComidasConMayorCantidadCalorias(Integer.valueOf(calorias))); break; }
+            case 2:{ llenarFilasDeLaTabla(comiData.listarComidasConMenorCantidadCalorias(Integer.valueOf(calorias))); break; }
+        }
+    }
+    
+    private void vaciarFilasDeLaTabla(){
+        modeloTab.setRowCount(0);
+    }
+    
+//---------- Excepciones ----------
+    private void excepcionCampoVacio(String dato) throws CampoVacioException {
+        if(dato.isEmpty()){
+            throw new CampoVacioException("Campo/s vacio");
+        }
+    }
+    
+    private void excepcionRangoNumerico(int num) throws RangoNumericoException {
+        if(num < 1 || num > 10000){
+            throw new RangoNumericoException("Solo se permiten valores entre 1 y 10.000");
+        }
     }
 
     /**
@@ -39,16 +149,17 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
         jTabConsultasComidas = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jButSalir = new javax.swing.JButton();
-        jButDieta = new javax.swing.JButton();
+        jButAgregar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jComBoBuscarPorCalorias = new javax.swing.JComboBox<>();
         jComBoOrdenarPor = new javax.swing.JComboBox<>();
-        jButBuscar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jTexFiBuscar = new javax.swing.JTextField();
+        jLabJTFBuscar = new javax.swing.JLabel();
+        jButLimpiar = new javax.swing.JButton();
 
         jTabConsultasComidas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -84,7 +195,7 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
             }
         });
 
-        jButDieta.setText("Agregar");
+        jButAgregar.setText("Agregar");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -92,7 +203,7 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(452, 452, 452)
-                .addComponent(jButDieta, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
@@ -103,7 +214,7 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
                 .addGap(6, 6, 6)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButSalir)
-                    .addComponent(jButDieta))
+                    .addComponent(jButAgregar))
                 .addGap(12, 12, 12))
         );
 
@@ -137,45 +248,72 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
                 .addGap(12, 12, 12))
         );
 
-        jComBoBuscarPorCalorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODAS", "POR MENOR CANTIDAD DE CALORIAS", "POR MAYOR CANTIDAD DE CALORIAS" }));
+        jComBoBuscarPorCalorias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComBoBuscarPorCaloriasActionPerformed(evt);
+            }
+        });
 
-        jComBoOrdenarPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "POR NOMBRE", "POR CODIGO" }));
-
-        jButBuscar.setText("Buscar");
+        jComBoOrdenarPor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComBoOrdenarPorActionPerformed(evt);
+            }
+        });
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jTexFiBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTexFiBuscarKeyReleased(evt);
+            }
+        });
+
+        jLabJTFBuscar.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+
+        jButLimpiar.setText("Limpiar");
+        jButLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
+                .addGap(12, 12, 12)
                 .addComponent(jComBoOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(jComBoBuscarPorCalorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(jButBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(2, 2, 2)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
+                        .addComponent(jComBoBuscarPorCalorias, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabJTFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComBoBuscarPorCalorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComBoOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButBuscar)
-                    .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(9, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComBoBuscarPorCalorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComBoOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTexFiBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButLimpiar))
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabJTFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -195,11 +333,11 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -211,13 +349,77 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jButSalirActionPerformed
 
+    private void jComBoOrdenarPorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComBoOrdenarPorActionPerformed
+        // TODO add your handling code here:
+        
+        try{
+            String caloriasCad = jTexFiBuscar.getText(); excepcionCampoVacio(caloriasCad);
+            int calorias = (int) Long.parseLong(caloriasCad); excepcionRangoNumerico(calorias);
+            
+            llenarTablaPersonalizado(caloriasCad);
+        } catch(CampoVacioException cve){
+            llenarTablaPorDefecto();
+        } catch(NumberFormatException nfe){
+            //Capturo está excepción para evitar que intente listar una cadena de caracteres
+        } catch(RangoNumericoException rne){
+            //Capturo está excepción para evitar que intente buscar números superiores
+        }
+    }//GEN-LAST:event_jComBoOrdenarPorActionPerformed
+
+    private void jComBoBuscarPorCaloriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComBoBuscarPorCaloriasActionPerformed
+        // TODO add your handling code here:
+//        jTexFiBuscar.setText("");
+//        jLabJTFBuscar.setText("");
+//        llenarTablaPorDefecto();
+
+        try{
+            String caloriasCad = jTexFiBuscar.getText(); excepcionCampoVacio(caloriasCad);
+            int calorias = (int) Long.parseLong(caloriasCad); excepcionRangoNumerico(calorias);
+            
+            llenarTablaPersonalizado(caloriasCad);
+        } catch(CampoVacioException cve){
+            llenarTablaPorDefecto();
+        } catch(NumberFormatException nfe){
+            //Capturo está excepción para evitar que intente listar una cadena de caracteres
+        } catch(RangoNumericoException rne){
+            //Capturo está excepción para evitar que intente buscar números superiores
+        }
+    }//GEN-LAST:event_jComBoBuscarPorCaloriasActionPerformed
+
+    private void jTexFiBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTexFiBuscarKeyReleased
+        // TODO add your handling code here:
+        jLabJTFBuscar.setText("");
+        
+        try{
+            String caloriasCad = jTexFiBuscar.getText(); excepcionCampoVacio(caloriasCad);
+            int calorias = (int) Long.parseLong(caloriasCad); excepcionRangoNumerico(calorias);
+            llenarTablaPersonalizado(caloriasCad);
+        } catch(CampoVacioException cve){
+            llenarTablaPorDefecto();
+        } catch(NumberFormatException nfe){
+            jLabJTFBuscar.setText("solo números");
+        } catch(RangoNumericoException rne){
+            jLabJTFBuscar.setText("desde 1 hasta 10.000");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jTexFiBuscarKeyReleased
+
+    private void jButLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButLimpiarActionPerformed
+        // TODO add your handling code here:
+        jTexFiBuscar.setText("");
+        jLabJTFBuscar.setText("");
+        llenarTablaPorDefecto();
+    }//GEN-LAST:event_jButLimpiarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButBuscar;
-    private javax.swing.JButton jButDieta;
+    private javax.swing.JButton jButAgregar;
+    private javax.swing.JButton jButLimpiar;
     private javax.swing.JButton jButSalir;
     private javax.swing.JComboBox<String> jComBoBuscarPorCalorias;
     private javax.swing.JComboBox<String> jComBoOrdenarPor;
+    private javax.swing.JLabel jLabJTFBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

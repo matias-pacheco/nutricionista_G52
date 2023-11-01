@@ -45,4 +45,13 @@ public class Comparadores {
             else { return 1; }
         }
     };
+    
+    public static Comparator<Comida> ordenarPorCalorias = new Comparator<Comida>(){
+        @Override
+        public int compare(Comida c1, Comida c2){
+            if(c1.getCantCalorias() < c2.getCantCalorias()){ return -1; }
+            else if(c1.getCantCalorias() == c2.getCantCalorias()){ return 0; }
+            else { return 1; }
+        }
+    };
 }

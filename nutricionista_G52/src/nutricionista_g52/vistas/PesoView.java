@@ -5,17 +5,114 @@
  */
 package nutricionista_g52.vistas;
 
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import nutricionista_g52.accesoADatos.Historial_PesoData;
+import nutricionista_g52.entidades.Historial_Peso;
+import nutricionista_g52.entidades.Paciente;
+import nutricionista_g52.vistas.excepciones.CampoVacioException;
+import nutricionista_g52.vistas.excepciones.RangoNumericoException;
+
 /**
  *
  * @author Matías Pacheco
  */
 public class PesoView extends javax.swing.JInternalFrame {
-
+    private Paciente paciente;
+    private Historial_PesoData hisPesoData;
+    private DefaultTableModel modeloTab;
+            
     /**
      * Creates new form PesoView
      */
     public PesoView() {
         initComponents();
+    }
+    
+    public PesoView(Paciente paciente, boolean dietaVigente) {
+        initComponents();
+        this.paciente = paciente;
+        this.hisPesoData = new Historial_PesoData();
+        this.modeloTab = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int fila, int columna){
+                return false;
+            }
+        };
+        porDefecto();
+        desHabilitarComponentes(dietaVigente);
+    }
+    
+//---------- Por Defecto ----------
+    private void porDefecto(){
+        llenarDatosDelPaciente();
+        agregarColumnasALaTabla();
+        deshabilitarElReordenamientoDeColumnas();
+        seleccionarCheBoOrdendescendente();
+        llenarTablaPordefecto();
+    }
+    
+    private void llenarDatosDelPaciente(){
+        jLabNombrePaciente.setText(paciente.getNombre()+" "+paciente.getApellido());
+        jLabDniPaciente.setText(String.valueOf(paciente.getDni()));
+        jLabPesoPaciente.setText(String.valueOf(hisPesoData.buscarPesoActual(paciente.getIdPaciente()).getPeso()));
+    }
+    
+    private void agregarColumnasALaTabla(){
+        modeloTab.addColumn("FECHA");
+        modeloTab.addColumn("PESO");
+        
+        jTabPeso.setModel(modeloTab);
+    }
+    
+    private void deshabilitarElReordenamientoDeColumnas(){
+        jTabPeso.getTableHeader().setReorderingAllowed(false);
+    }
+    
+    private void seleccionarCheBoOrdendescendente(){
+        jCheBoOrdenDescendente.setSelected(true);
+    }
+    
+    private void llenarTablaPordefecto(){
+        vaciarFilasDeLaTabla();
+        
+        if(jCheBoOrdenDescendente.isSelected()){
+            llenarFilasDeLatabla(hisPesoData.listarHistorial_PesoUltimaDietaPorOrdenAscODesc(paciente.getIdPaciente(), "DESC"));
+        } else {
+            llenarFilasDeLatabla(hisPesoData.listarHistorial_PesoUltimaDietaPorOrdenAscODesc(paciente.getIdPaciente(), "ASC"));
+        }
+    }
+    
+    private void desHabilitarComponentes(boolean habilitado){
+        jButCargar.setEnabled(habilitado);
+   }
+    
+//---------- Listar, Vaciar ----------
+    private void llenarFilasDeLatabla(List<Historial_Peso> registro){
+        for(Historial_Peso hisPeso : registro){
+            modeloTab.addRow(new Object[] {hisPeso.getFecha(), hisPeso.getPeso()});
+        }
+//        System.out.println(jTabPeso.getRowCount());
+    }
+    
+    private void vaciarFilasDeLaTabla(){
+        modeloTab.setRowCount(0);
+    }
+    
+//---------- Excepciones ----------
+    private void excepcionCampoVacio(String dato) throws CampoVacioException {
+        if(dato.isEmpty()){
+            throw new CampoVacioException("Campo/s vacio");
+        }
+    }
+    
+    private void excepcionRangoNumerico(double num, double rangoMenor, double rangoMayor) throws RangoNumericoException {
+        if(num < rangoMenor || num > rangoMayor){
+            throw new RangoNumericoException("Solo se permiten valores entre \n"+(int)rangoMenor+",0 "
+                    + "y "+(int)rangoMayor+",0");
+        }
     }
 
     /**
@@ -34,11 +131,13 @@ public class PesoView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTabPeso = new javax.swing.JTable();
         jLabel10 = new javax.swing.JLabel();
+        jCheBoOrdenDescendente = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabPesoPaciente = new javax.swing.JLabel();
         jLabDniPaciente = new javax.swing.JLabel();
+        jLabPesoPaciente1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabNombrePaciente = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -100,36 +199,55 @@ public class PesoView extends javax.swing.JInternalFrame {
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel10.setText("Registro");
 
+        jCheBoOrdenDescendente.setText("Orden Descendente");
+        jCheBoOrdenDescendente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheBoOrdenDescendenteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(147, 147, 147)
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel10)
+                        .addGap(72, 72, 72)
+                        .addComponent(jCheBoOrdenDescendente)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(2, 2, 2)
-                .addComponent(jLabel10)
-                .addGap(12, 12, 12)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jCheBoOrdenDescendente))
+                .addGap(9, 9, 9)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63))
         );
 
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setText("DNI:");
 
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setText("Peso:");
 
-        jLabPesoPaciente.setText("nroKg");
+        jLabPesoPaciente.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabPesoPaciente.setText("nro");
 
+        jLabDniPaciente.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabDniPaciente.setText("nro");
+
+        jLabPesoPaciente1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabPesoPaciente1.setText("Kg");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -144,6 +262,8 @@ public class PesoView extends javax.swing.JInternalFrame {
                 .addComponent(jLabel4)
                 .addGap(20, 20, 20)
                 .addComponent(jLabPesoPaciente)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabPesoPaciente1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -154,13 +274,14 @@ public class PesoView extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabDniPaciente)
                     .addComponent(jLabel4)
-                    .addComponent(jLabPesoPaciente))
+                    .addComponent(jLabPesoPaciente)
+                    .addComponent(jLabPesoPaciente1))
                 .addGap(16, 16, 16))
         );
 
         jPanel5.setBackground(new java.awt.Color(102, 102, 102));
 
-        jLabNombrePaciente.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabNombrePaciente.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
         jLabNombrePaciente.setForeground(new java.awt.Color(255, 255, 255));
         jLabNombrePaciente.setText("Nombre Paciente");
 
@@ -189,6 +310,11 @@ public class PesoView extends javax.swing.JInternalFrame {
         });
 
         jButCargar.setText("Cargar");
+        jButCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButCargarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -255,13 +381,46 @@ public class PesoView extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jButSalirActionPerformed
 
+    private void jCheBoOrdenDescendenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheBoOrdenDescendenteActionPerformed
+        // TODO add your handling code here:
+        llenarTablaPordefecto();
+    }//GEN-LAST:event_jCheBoOrdenDescendenteActionPerformed
+
+    private void jButCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButCargarActionPerformed
+        // TODO add your handling code here:
+        
+        boolean entrada = false;
+        
+        do{ 
+            try{
+                String pesoCad = JOptionPane.showInputDialog(this, "Ingrese el peso del paciente", "  Agregar Peso", 1);
+                excepcionCampoVacio(pesoCad);
+                double peso = Double.parseDouble(pesoCad);
+                Historial_Peso historialPeso = new Historial_Peso(paciente, LocalDate.now(), peso);
+                hisPesoData.guardarHistorial_Peso(historialPeso);
+            } catch(CampoVacioException cve){
+                JOptionPane.showMessageDialog(null, "Campo Vacio. Ingrese el peso del paciente", "  Mensaje", 1);
+                entrada = true;
+            } catch(NullPointerException npe){
+                entrada = false;
+            } catch(NumberFormatException nfe){
+                JOptionPane.showMessageDialog(null, "Ingrese unicamente números (decimales separados por punto)", "  Mensaje", 1);
+                entrada = true;
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+        } while(entrada);
+    }//GEN-LAST:event_jButCargarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButCargar;
     private javax.swing.JButton jButSalir;
+    private javax.swing.JCheckBox jCheBoOrdenDescendente;
     private javax.swing.JLabel jLabDniPaciente;
     private javax.swing.JLabel jLabNombrePaciente;
     private javax.swing.JLabel jLabPesoPaciente;
+    private javax.swing.JLabel jLabPesoPaciente1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

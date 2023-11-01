@@ -24,7 +24,7 @@ public class DietaView extends javax.swing.JInternalFrame {
         initComponents();
         this.dieta = dieta;
         llenarDatosDeLaDieta();
-        desHabilitarComponentes();
+//        desHabilitarComponentes();
     }
     
     private void llenarDatosDeLaDieta(){
@@ -286,7 +286,7 @@ public class DietaView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         
         if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 3){
-            EditarDietaView ediDieV = new EditarDietaView();
+            EditarDietaView ediDieV = new EditarDietaView(dieta);
             ediDieV.setVisible(true);
             
             int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - ediDieV.getWidth()) / 2;
