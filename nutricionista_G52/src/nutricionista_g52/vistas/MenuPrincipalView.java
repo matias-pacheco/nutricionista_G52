@@ -5,6 +5,8 @@
  */
 package nutricionista_g52.vistas;
 
+import nutricionista_g52.accesoADatos.Conexion;
+
 /**
  *
  * @author Matías Pacheco
@@ -44,7 +46,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenItSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Nutricional G52");
+        setTitle("Nutricional PF");
 
         javax.swing.GroupLayout jDesPaEscritorioLayout = new javax.swing.GroupLayout(jDesPaEscritorio);
         jDesPaEscritorio.setLayout(jDesPaEscritorioLayout);
@@ -56,6 +58,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             jDesPaEscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 701, Short.MAX_VALUE)
         );
+
+        jMenuBar1.setToolTipText("");
 
         jMenu1.setText("Pacientes");
 
@@ -126,6 +130,11 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenu4.setText("Salir");
 
         jMenItSalir.setText("Salir");
+        jMenItSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenItSalirActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenItSalir);
 
         jMenuBar1.add(jMenu4);
@@ -199,7 +208,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         comiV.setLocation(x, y);
         
         jDesPaEscritorio.add(comiV);
-        jDesPaEscritorio.moveToFront(comiV);
+        jDesPaEscritorio.moveToBack(comiV);
     }//GEN-LAST:event_jMenItComidasActionPerformed
 
     private void jMenItConsultasComidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenItConsultasComidasActionPerformed
@@ -237,6 +246,13 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jDesPaEscritorio.add(newDieV);
         jDesPaEscritorio.moveToFront(newDieV);
     }//GEN-LAST:event_jMenItDietasNuevaActionPerformed
+
+    private void jMenItSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenItSalirActionPerformed
+        // TODO add your handling code here:
+        Conexion.desconectar();
+        this.dispose();
+        System.exit(0);
+    }//GEN-LAST:event_jMenItSalirActionPerformed
 
     /**
      * @param args the command line arguments
