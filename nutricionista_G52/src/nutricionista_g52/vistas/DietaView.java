@@ -304,7 +304,7 @@ public class DietaView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         
         if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 3){
-            DietaComidasView dieComiV = new DietaComidasView();
+            DietaComidasView dieComiV = new DietaComidasView(dieta);
             dieComiV.setVisible(true);
             
             int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - dieComiV.getWidth()) / 2;

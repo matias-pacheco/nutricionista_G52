@@ -33,7 +33,7 @@ public class Dieta_ComidaData {
         this.dieData = new DietaData();
     }
     
-    public void guardarDieta_Comida(Dieta_Comida dietaComida){
+    public boolean guardarDieta_Comida(Dieta_Comida dietaComida){
         String sql = "INSERT INTO dieta_comida (idComida, idDieta, horario, porcion) "
                 + "SELECT ?, ?, ?, ? WHERE NOT EXISTS("
                     + "SELECT 1 FROM dieta_comida WHERE idComida = ? AND idDieta = ? AND horario LIKE ?"
@@ -57,10 +57,11 @@ public class Dieta_ComidaData {
             
             if(rs.next()){
                 dietaComida.setIdDietaComida(rs.getInt(1));
-                
                 JOptionPane.showMessageDialog(null, "Se agrego comida a la dieta", "  Mensaje", 1);
+                return true;
             } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar comida a la dieta", "  Mensaje", 1);
+                JOptionPane.showMessageDialog(null, "No se agrego la comida a la dieta. Verifique que la dieta no"
+                        + "\ntenga está comida en el horario que desea ingresar", "  Mensaje", 1);
             }
         } catch(SQLException sqle){
             System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
@@ -72,6 +73,8 @@ public class Dieta_ComidaData {
             cerrarPreparedStatement(ps);
             cerrarResultSet(rs);
         }
+        
+        return false;
     }
     
     public Dieta_Comida buscarDieta_Comida(String nombreComida, int dni, HorarioAlimenticio horario){
@@ -163,7 +166,7 @@ public class Dieta_ComidaData {
         return dietaComida;
     }
     
-    public void modificarDieta_Comida(Dieta_Comida dietaComida){
+    public boolean modificarDieta_Comida(Dieta_Comida dietaComida){
         String sql = "UPDATE dieta_comida SET idComida = ?, horario = ?, porcion = ? WHERE idDieta IN("
                         + "SELECT idDieta FROM dieta WHERE fechaInicial IN("
                             + "SELECT MAX(fechaInicial) FROM dieta WHERE idPaciente IN("
@@ -195,10 +198,11 @@ public class Dieta_ComidaData {
             int modificados = ps.executeUpdate();
             
             if(modificados == 1){
-                JOptionPane.showMessageDialog(null, "Comida, horario o porción modificada", "  Mensaje", 1);
+                JOptionPane.showMessageDialog(null, "Comida de dieta modificada", "  Mensaje", 1);
+                return true;
             } else {
-                JOptionPane.showMessageDialog(null, "No se pudo modificar la comida, horario o porción", 
-                        "  Mensaje", 1);
+                JOptionPane.showMessageDialog(null, "No se guardo ninguna modificación. Debe realizar al menos "
+                        + "\nuna modificación para guardarla.", "", 1);
             }
         } catch(SQLException sqle){
             System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
@@ -209,6 +213,8 @@ public class Dieta_ComidaData {
         } finally {
             cerrarPreparedStatement(ps);
         }
+        
+        return false;
     }
     
     public void borrarComidaDeDieta(Dieta_Comida dietaComida){
@@ -248,7 +254,7 @@ public class Dieta_ComidaData {
         }
     }
     
-    public void borrarComida_Dieta(int id){
+    public void borrarComida_Dieta(int idDietaComida){
         String sql = "DELETE FROM dieta_comida WHERE idComida IN("
                     + "SELECT dieta_comida.idComida FROM dieta_comida JOIN comida ON(dieta_comida.idComida = "
                     + "comida.idComida) WHERE idDietaComida = ? AND estado = 1"
@@ -269,14 +275,14 @@ public class Dieta_ComidaData {
         
         try{
             ps = conex.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.setInt(2, id);
-            ps.setInt(3, id);
+            ps.setInt(1, idDietaComida);
+            ps.setInt(2, idDietaComida);
+            ps.setInt(3, idDietaComida);
             
             int eliminados = ps.executeUpdate();
             
             if(eliminados == 1){
-                JOptionPane.showMessageDialog(null, "Se elimino la comida de la dieta", "  Mensaje", 1);
+                JOptionPane.showMessageDialog(null, "Comida eliminada de Dieta", "  Mensaje", 1);
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo eliminar la comida de la dieta", "  Mensaje", 1);
             }
@@ -291,7 +297,7 @@ public class Dieta_ComidaData {
         }
     }
     
-    public List<Comida> listarComidasDeDietaPorIdPaciente(int id){
+    public List<Comida> listarComidasDeDietaPorIdPaciente(int idPaciente){
         String sql = "SELECT comida.* FROM comida JOIN dieta_comida ON(comida.idComida = dieta_comida.idComida) "
                 + "WHERE idDietaComida IN("
                     + "SELECT idDietaComida FROM dieta_comida WHERE idDieta IN("
@@ -307,7 +313,7 @@ public class Dieta_ComidaData {
         
         try{
             ps = conex.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, idPaciente);
             
             rs = ps.executeQuery();
             
@@ -320,6 +326,213 @@ public class Dieta_ComidaData {
                 comida.setEstado(rs.getBoolean("estado"));
                 
                 registro.add(comida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Object> listarComidasDeDietaYDieta_ComidaPorIdPacienteSinHorariosNoSeleccionadosOrdenadoAscPor(int idPaciente, 
+            String noHorarios, String ordenarPor){
+        String sql = "SELECT comida.*, dieta_comida.* FROM comida JOIN dieta_comida ON(comida.idComida = dieta_comida.idComida) "
+                + "WHERE idDietaComida IN("
+                    + "SELECT idDietaComida FROM dieta_comida WHERE idDieta IN("
+                        + "SELECT idDieta FROM dieta WHERE fechaInicial IN("
+                            + "SELECT MAX(fechaInicial) FROM dieta JOIN paciente ON(dieta.idPaciente = "
+                            + "paciente.idPaciente) WHERE dieta.idPaciente = ? AND estado = 1"
+                        + ")"
+                    + ")"
+                + ") AND estado = 1"+noHorarios+" ORDER BY "+ordenarPor+" ASC;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Object> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, idPaciente);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("comida.idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                Dieta_Comida dietaComida = new Dieta_Comida();
+                dietaComida.setIdDietaComida(rs.getInt("idDietaComida"));
+                dietaComida.setComida(comiData.buscarComidaPorId(rs.getInt("dieta_comida.idComida")));
+                dietaComida.setDieta(dieData.buscarDieta(rs.getInt("idDieta")));
+                dietaComida.setHorario(HorarioAlimenticio.valueOf(rs.getString("horario")));
+                dietaComida.setPorcion(rs.getInt("porcion"));
+                
+                registro.add(comida);
+                registro.add(dietaComida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Object> listarComidasDeDietaYDieta_ComidaConMenorCantidadDeCaloriasPorIdPacienteSinHorariosNoSeleccionadosOrdenadoAscPor(
+            int idPaciente, int calorias, String noHorarios, String ordenarPor){
+        String sql = "SELECT comida.*, dieta_comida.* FROM comida JOIN dieta_comida ON(comida.idComida = dieta_comida.idComida) "
+                + "WHERE idDietaComida IN("
+                    + "SELECT idDietaComida FROM dieta_comida WHERE idDieta IN("
+                        + "SELECT idDieta FROM dieta WHERE fechaInicial IN("
+                            + "SELECT MAX(fechaInicial) FROM dieta JOIN paciente ON(dieta.idPaciente = "
+                            + "paciente.idPaciente) WHERE dieta.idPaciente = ? AND estado = 1"
+                        + ")"
+                    + ")"
+                + ") AND cantCalorias < ? AND estado = 1"+noHorarios+" ORDER BY "+ordenarPor+" ASC;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Object> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, idPaciente);
+            ps.setInt(2, calorias);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("comida.idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                Dieta_Comida dietaComida = new Dieta_Comida();
+                dietaComida.setIdDietaComida(rs.getInt("idDietaComida"));
+                dietaComida.setComida(comiData.buscarComidaPorId(rs.getInt("dieta_comida.idComida")));
+                dietaComida.setDieta(dieData.buscarDieta(rs.getInt("idDieta")));
+                dietaComida.setHorario(HorarioAlimenticio.valueOf(rs.getString("horario")));
+                dietaComida.setPorcion(rs.getInt("porcion"));
+                
+                registro.add(comida);
+                registro.add(dietaComida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Object> listarComidasDeDietaYDieta_ComidaConMayorCantidadDeCaloriasPorIdPacienteSinHorariosNoSeleccionadosOrdenadoAscPor(
+            int idPaciente, int calorias, String noHorarios,String ordenarPor){
+        String sql = "SELECT comida.*, dieta_comida.* FROM comida JOIN dieta_comida ON(comida.idComida = dieta_comida.idComida) "
+                + "WHERE idDietaComida IN("
+                    + "SELECT idDietaComida FROM dieta_comida WHERE idDieta IN("
+                        + "SELECT idDieta FROM dieta WHERE fechaInicial IN("
+                            + "SELECT MAX(fechaInicial) FROM dieta JOIN paciente ON(dieta.idPaciente = "
+                            + "paciente.idPaciente) WHERE dieta.idPaciente = ? AND estado = 1"
+                        + ")"
+                    + ")"
+                + ") AND cantCalorias > ? AND estado = 1"+noHorarios+" ORDER BY "+ordenarPor+" ASC;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Object> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, idPaciente);
+            ps.setInt(2, calorias);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("comida.idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                Dieta_Comida dietaComida = new Dieta_Comida();
+                dietaComida.setIdDietaComida(rs.getInt("idDietaComida"));
+                dietaComida.setComida(comiData.buscarComidaPorId(rs.getInt("dieta_comida.idComida")));
+                dietaComida.setDieta(dieData.buscarDieta(rs.getInt("idDieta")));
+                dietaComida.setHorario(HorarioAlimenticio.valueOf(rs.getString("horario")));
+                dietaComida.setPorcion(rs.getInt("porcion"));
+                
+                registro.add(comida);
+                registro.add(dietaComida);
+            }
+        } catch(SQLException sqle){
+            System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            cerrarPreparedStatement(ps);
+            cerrarResultSet(rs);
+        }
+        
+        return registro;
+    }
+    
+    public List<Object> listarComidasDeDietaYDieta_ComidaPorAproximacionDeCaloriasPorIdPacienteSinHorariosNoSeleccionadosOrdenadoAscPor(
+            int idPaciente, String calorias, String noHorarios, String ordenarPor){
+        String sql = "SELECT comida.*, dieta_comida.* FROM comida JOIN dieta_comida ON(comida.idComida = dieta_comida.idComida) "
+                + "WHERE idDietaComida IN("
+                    + "SELECT idDietaComida FROM dieta_comida WHERE idDieta IN("
+                        + "SELECT idDieta FROM dieta WHERE fechaInicial IN("
+                            + "SELECT MAX(fechaInicial) FROM dieta JOIN paciente ON(dieta.idPaciente = "
+                            + "paciente.idPaciente) WHERE dieta.idPaciente = ? AND estado = 1"
+                        + ")"
+                    + ")"
+                + ") AND CONVERT(cantCalorias, CHAR) LIKE ? AND estado = 1"+noHorarios+" ORDER BY "+ordenarPor+" ASC;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Object> registro = new ArrayList<>();
+        
+        try{
+            ps = conex.prepareStatement(sql);
+            ps.setInt(1, idPaciente);
+            ps.setString(2, calorias);
+            
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setIdComida(rs.getInt("comida.idComida"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setDetalle(rs.getString("detalle"));
+                comida.setCantCalorias(rs.getInt("cantCalorias"));
+                comida.setEstado(rs.getBoolean("estado"));
+                
+                Dieta_Comida dietaComida = new Dieta_Comida();
+                dietaComida.setIdDietaComida(rs.getInt("idDietaComida"));
+                dietaComida.setComida(comiData.buscarComidaPorId(rs.getInt("dieta_comida.idComida")));
+                dietaComida.setDieta(dieData.buscarDieta(rs.getInt("idDieta")));
+                dietaComida.setHorario(HorarioAlimenticio.valueOf(rs.getString("horario")));
+                dietaComida.setPorcion(rs.getInt("porcion"));
+                
+                registro.add(comida);
+                registro.add(dietaComida);
             }
         } catch(SQLException sqle){
             System.err.println(sqle.getMessage()+"\nCódigo de ERROR: "+sqle.getErrorCode());

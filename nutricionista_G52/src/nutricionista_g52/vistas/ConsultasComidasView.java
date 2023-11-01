@@ -5,6 +5,7 @@
  */
 package nutricionista_g52.vistas;
 
+import java.awt.HeadlessException;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JInternalFrame;
@@ -14,6 +15,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import nutricionista_g52.accesoADatos.ComidaData;
 import nutricionista_g52.entidades.Comida;
+import nutricionista_g52.entidades.Dieta;
 import nutricionista_g52.vistas.EditarPacienteView;
 import nutricionista_g52.vistas.MenuPrincipalView;
 import nutricionista_g52.vistas.NuevoPacienteView;
@@ -29,6 +31,7 @@ import nutricionista_g52.vistas.excepciones.RangoNumericoException;
 public class ConsultasComidasView extends javax.swing.JInternalFrame {
     private DefaultTableModel modeloTab;
     private ComidaData comiData;
+    private Dieta dieta; //null ¿?
     
     /**
      * Creates new form PacientesView
@@ -42,6 +45,21 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
             }
         };
         this.comiData = new ComidaData();
+        habilitarComponentes(false);
+        porDefecto();
+    }
+    
+    public ConsultasComidasView(Dieta dieta) {
+        initComponents();
+        this.modeloTab = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int fila, int columna){
+                return false;
+            }
+        };
+        this.comiData = new ComidaData();
+        this.dieta = dieta;
+        habilitarComponentes(true);
         porDefecto();
     }
     
@@ -51,7 +69,6 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
         listarJComBoBuscarPorCalorias();
         agregarColumnasALaTabla();
         deshabilitarElReordenamientoDeColumnas();
-        habilitarComponentes(false);
         llenarTablaPorDefecto();
     }
     
@@ -121,6 +138,16 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
     
     private void vaciarFilasDeLaTabla(){
         modeloTab.setRowCount(0);
+    }
+    
+    private Comida seleccionarComidaEnTabla(){
+        Comida comida = comiData.buscarComidaPorId(seleccionarCodigoEnTabla());
+        return comida;
+    }
+    
+    private int seleccionarCodigoEnTabla(){
+        int codigo = (int) jTabConsultasComidas.getValueAt(jTabConsultasComidas.getSelectedRow(), 0);
+        return codigo;
     }
     
 //---------- Excepciones ----------
@@ -196,6 +223,11 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
         });
 
         jButAgregar.setText("Agregar");
+        jButAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButAgregarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -362,7 +394,7 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
         } catch(NumberFormatException nfe){
             //Capturo está excepción para evitar que intente listar una cadena de caracteres
         } catch(RangoNumericoException rne){
-            //Capturo está excepción para evitar que intente buscar números superiores
+            //Capturo está excepción para evitar que intente buscar números superiores o inferiores
         }
     }//GEN-LAST:event_jComBoOrdenarPorActionPerformed
 
@@ -411,6 +443,32 @@ public class ConsultasComidasView extends javax.swing.JInternalFrame {
         jLabJTFBuscar.setText("");
         llenarTablaPorDefecto();
     }//GEN-LAST:event_jButLimpiarActionPerformed
+
+    private void jButAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButAgregarActionPerformed
+        // TODO add your handling code here:
+        if(MenuPrincipalView.jDesPaEscritorio.getComponentCount() < 5){
+            if(jTabConsultasComidas.getSelectedRow() == -1){
+                try{
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar un paciente de la tabla", "  Mensaje", 1);
+                    return;
+                } catch(HeadlessException he){
+                    System.err.println(he.getMessage());
+                }
+            }
+            
+            AgregarComidaADietaView agreComiADieV = new AgregarComidaADietaView(seleccionarComidaEnTabla(), dieta);
+            agreComiADieV.setVisible(true);
+                    
+            int x = (MenuPrincipalView.jDesPaEscritorio.getWidth() - agreComiADieV.getWidth()) / 2;
+            int y = (MenuPrincipalView.jDesPaEscritorio.getHeight() - agreComiADieV.getHeight()) / 2;
+                    
+            agreComiADieV.setLocation(x, y);
+                    
+            MenuPrincipalView.jDesPaEscritorio.add(agreComiADieV);
+                    
+            agreComiADieV.toFront();
+        }
+    }//GEN-LAST:event_jButAgregarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
