@@ -39,14 +39,11 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         jMenItConsultasPacientes = new javax.swing.JMenuItem();
         jMenItConsultasComidas = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenItTurnos = new javax.swing.JMenuItem();
-        jMenItRecordatorios = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenItSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Nutricional PF");
+        setTitle("Nutricional G52");
 
         javax.swing.GroupLayout jDesPaEscritorioLayout = new javax.swing.GroupLayout(jDesPaEscritorio);
         jDesPaEscritorio.setLayout(jDesPaEscritorioLayout);
@@ -116,16 +113,6 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jMenu5.add(jMenItConsultasComidas);
 
         jMenuBar1.add(jMenu5);
-
-        jMenu3.setText("Turnos");
-
-        jMenItTurnos.setText("Turnos");
-        jMenu3.add(jMenItTurnos);
-
-        jMenItRecordatorios.setText("Recordatorios");
-        jMenu3.add(jMenItRecordatorios);
-
-        jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Salir");
 
@@ -297,12 +284,9 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenItConsultasPacientes;
     private javax.swing.JMenuItem jMenItDietasNueva;
     private javax.swing.JMenuItem jMenItPacientes;
-    private javax.swing.JMenuItem jMenItRecordatorios;
     private javax.swing.JMenuItem jMenItSalir;
-    private javax.swing.JMenuItem jMenItTurnos;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
