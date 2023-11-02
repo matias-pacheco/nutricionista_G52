@@ -5,6 +5,7 @@
  */
 package nutricionista_g52.vistas;
 
+import nutricionista_g52.accesoADatos.DietaData;
 import nutricionista_g52.entidades.Dieta;
 
 /**
@@ -13,6 +14,8 @@ import nutricionista_g52.entidades.Dieta;
  */
 public class DietaView extends javax.swing.JInternalFrame {
     private Dieta dieta;
+    private DietaData dieData;
+    
     /**
      * Creates new form ComidasView
      */
@@ -23,8 +26,10 @@ public class DietaView extends javax.swing.JInternalFrame {
     public DietaView(Dieta dieta) {
         initComponents();
         this.dieta = dieta;
+        this.dieData = new DietaData();
+        habilitarComponentes(dieData.isPacienteHaceDieta(dieta.getPaciente().getDni()));
         llenarDatosDeLaDieta();
-//        desHabilitarComponentes();
+        
     }
     
     private void llenarDatosDeLaDieta(){
@@ -36,12 +41,8 @@ public class DietaView extends javax.swing.JInternalFrame {
         jLabPesoFinal.setText(String.valueOf(dieta.getPesoFinal()));
     }
     
-    private void desHabilitarComponentes(){//TEMPORAL hasta implementar funcionalidad
-        jButComidas.setEnabled(false);
-        jButEditar.setEnabled(false);
-        
-        jButComidas.setVisible(false);
-        jButEditar.setVisible(false);
+    private void habilitarComponentes(boolean habilitado){
+        jButEditar.setEnabled(habilitado);
     }
 
     /**

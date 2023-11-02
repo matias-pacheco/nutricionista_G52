@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+import nutricionista_g52.accesoADatos.DietaData;
 import nutricionista_g52.accesoADatos.Dieta_ComidaData;
 import nutricionista_g52.entidades.Comida;
 import nutricionista_g52.entidades.Dieta;
@@ -32,6 +33,7 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
     private DefaultTableModel modeloTab;
     private Dieta_ComidaData dieComiData;
     private Dieta dieta;
+    private DietaData dieData;
     
     /**
      * Creates new form PacientesView
@@ -50,6 +52,7 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
         };
         this.dieComiData = new Dieta_ComidaData();
         this.dieta = dieta;
+        this.dieData = new DietaData();
         porDefecto();
     }
     
@@ -62,6 +65,7 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
         deshabilitarElReordenamientoDeColumnas();
         seleccionarJCheckBoxDeLosHorarios(6, true);
         habilitarComponentes(false);
+        habilitarComponentesSegunEstadoDeLaDieta(dieData.isPacienteHaceDieta(dieta.getPaciente().getDni()));
         llenarTablaPorDefecto();
     }
     
@@ -130,6 +134,12 @@ public class DietaComidasView extends javax.swing.JInternalFrame {
     
     private void habilitarComponentes(boolean habilitado){
         jCheBoTodos.setEnabled(habilitado);
+    }
+    
+    private void habilitarComponentesSegunEstadoDeLaDieta(boolean habilitado){
+        jButAgregar.setEnabled(habilitado);
+        jButEditar.setEnabled(habilitado);
+        jButEliminar.setEnabled(habilitado);
     }
     
 //---------- Listar, Ordenar, Vaciar -----------
